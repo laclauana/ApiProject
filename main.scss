@@ -1,0 +1,116 @@
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+@mixin letra($tamanio-letra, $tipografia, $color) {
+	font-size: $tamanio-letra;
+	font-family: $tipografia;
+	color: $color;
+}
+
+@mixin disenio-tarjeta($color-fondo, $radio) {
+	background-color: $color-fondo;
+	border-radius: $radio;
+	margin: 10px;
+}
+
+%alineacion-header-footer {
+	display: flex;
+	justify-content: center;
+	margin: 0;
+	height: 3rem;
+	align-items: center;
+	color: white;
+}
+
+%centrar-info {
+	width: 17%;
+	flex-wrap: wrap;
+	border-radius: 20px;
+	margin: 20px;
+}
+
+body {
+	background-color: limegreen;
+	margin: 0;
+	@include letra(0.9em, "Verdana", #fff);
+	overflow-x: hidden;
+}
+
+h1,
+footer {
+	@extend %alineacion-header-footer;
+	background-color: black;
+}
+
+input::placeholder,
+input[type="text"] {
+	width: 25rem;
+	@include letra(1rem, 'verdana', darkblue);
+}
+
+section:not(section:first-child) {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	article {
+		@extend %centrar-info;
+		@include disenio-tarjeta(limegreen, 6px);
+		&:hover {
+			transform: skew(1deg) scale(1.02);
+			transition: 0.07s;
+		}
+		.imagen {
+			width: 100%;
+			overflow: hidden;
+			img {
+				width: 100%;
+				// height: auto;
+			}
+		}
+		.info {
+			padding: 20px;
+			.estado {
+				display: flex;
+			}
+		}
+	}
+	p {
+		margin: 0;
+	}
+}
+
+a {
+	cursor: pointer;
+	@include letra(1.5rem, 'Verdana', darkgreen);
+}
+
+.header-image {
+	width: 100%;
+	height: 60vh;
+	overflow: hidden;
+	img {
+		width: 100%;
+		height: auto;
+	}
+}
+
+.form {
+	display: flex;
+	justify-content: space-evenly;
+	option,
+	label,
+	select {
+		@include letra(1rem, 'verdana', darkblue);
+	}
+}

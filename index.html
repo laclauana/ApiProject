@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maquetado API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>
+                Maquetado API
+            </h1>
+        </div>
+        <div class="header-image">
+            <img src="https://empresas.blogthinkbig.com/wp-content/uploads/2019/11/Imagen3-245003649.jpg?w=800" alt="">
+        </div>
+    </header>
+
+    <main>
+        <section>
+
+            <h2>Busqueda</h2>
+
+            <form action="get" class="form">
+                <div>
+                    <label for="busqueda"><input type="text" placeholder="Ingresa tu busqueda"></label>
+                </div>
+                <div>
+                    <label for="select">TIPO
+                        <select name="TIPO" id="tipo">
+                            <option value="COMICS">COMICS</option>
+                            <option value="PERSONAJES">PERSONAJES</option>
+                        </select>
+                    </label>
+                    <label for="select">ORDEN
+                        <select name="ORDEN" id="orden">
+                            <option value="A-Z">A-Z</option>
+                            <option value="Z-A">Z-A</option>
+                            <option value="mas-nuevos">Más nuevos</option>
+                            <option value="mas-viejos">Más viejos</option>
+                        </select>
+                    </label>
+                </div>
+                <div>
+                    <button class="buscar">BUSCAR</button>
+                </div>
+            </form>
+
+        </section>
+
+        <h2>Resultados</h2>
+        <p>${cantidad} RESULTADOS</p>
+        <section class="resultados">
+
+        </section>
+    </main>
+
+    <script src="index.js"></script>
+
+    <footer>
+        No hay montaña tan alta, ni valle tan ancho
+    </footer>
+</body>
+
+</html>
