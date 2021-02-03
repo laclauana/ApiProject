@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap");
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -33,7 +34,7 @@ body {
   background-color: limegreen;
   margin: 0;
   font-size: 0.9em;
-  font-family: "Verdana";
+  font-family: "Hachi Maru Pop";
   color: #fff;
   overflow-x: hidden;
 }
@@ -47,7 +48,7 @@ input::placeholder,
 input[type=text] {
   width: 25rem;
   font-size: 1rem;
-  font-family: "verdana";
+  font-family: "Hachi Maru Pop";
   color: darkblue;
 }
 
@@ -58,7 +59,7 @@ section:not(section:first-child) {
 }
 section:not(section:first-child) article {
   background-color: limegreen;
-  border-radius: 6px;
+  border-radius: 10px;
   margin: 10px;
 }
 section:not(section:first-child) article:hover {
@@ -72,21 +73,22 @@ section:not(section:first-child) article .imagen {
 section:not(section:first-child) article .imagen img {
   width: 100%;
 }
-section:not(section:first-child) article .info {
-  padding: 20px;
-}
-section:not(section:first-child) article .info .estado {
-  display: flex;
-}
-section:not(section:first-child) p {
+section:not(section:first-child) article p {
   margin: 0;
+}
+
+button {
+  font-size: 1.2rem;
+  font-family: "Hachi Maru Pop";
+  color: brown;
 }
 
 a {
   cursor: pointer;
   font-size: 1.5rem;
-  font-family: "Verdana";
+  font-family: "Hachi Maru Pop";
   color: darkgreen;
+  margin: 2em;
 }
 
 .header-image {
@@ -107,8 +109,22 @@ a {
 .form label,
 .form select {
   font-size: 1rem;
-  font-family: "verdana";
+  font-family: "Hachi Maru Pop";
   color: darkblue;
+}
+.form div {
+  display: flex;
+  align-items: center;
+}
+.form h2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.segunda-seccion {
+  display: flex;
+  flex-direction: column;
+  margin: 3em;
 }
 
 /*# sourceMappingURL=style.css.map */

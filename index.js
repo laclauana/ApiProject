@@ -6,55 +6,40 @@ console.log(link.id);
 link.textContent = 'Proxima pagina';
 
 const buscarInfo = (URL) => {
-	fetch(URL)
-		.then((data) => {
-			return data.json();
-		})
-		.then((personajes) => {
-			console.log(personajes);
+	fetch(URL).then((res) => res.json()).then((comic) => {
+		console.log(comic);
+		comics = comic.data.results;
 
-			const link = document.querySelector('#prox');
-			link.href = personajes.info.next;
-			link.onclick = (e) => {
-				e.preventDefault();
-				buscarInfo(personajes.info.next);
-			};
+		const seccion = document.querySelector('.resultados');
+		const link = document.querySelector('#prox');
+		// link.href = comic.data.next;
+		link.onclick = (e) => {
+			e.preventDefault();
+			// buscarInfo(comic.data.next);
+		};
 
-			const seccion = document.querySelector('.resultados');
-			seccion.innerHTML = '';
-			personajes.results.map((info) => {
-				seccion.innerHTML += `
-                <article>
-                <div class="imagen">
-                <img src="${info.image}">
-                </div>
-                <div class="info">
-                    <div class="nombre">
-                        <h2>${info.name}</h2>
-                    </div>
-                    <div class="estado">
-                        <p>${info.status}</p>
-                        - <p>${info.species}</p>
-                    </div>
-                    <div class="ubicacion">
-                        <p>Last known location:</p>
-                        <p>${info.location.name}</p>
-                    </div>
-                    <div class="episodio">
-                        <p>First seen in:</p>
-                        <p>${info.episode[0]}</p>
-                    </div>
-                </div>
-            </article>
-            `;
-			});
+		seccion.innerHTML = '';
+
+		comics.map((comic) => {
+			seccion.innerHTML += `
+                            <article>
+                            <div class="imagen">
+                            <img src="${comic.thumbnail.path}/portrait_uncanny.${comic.thumbnail.extension}">
+                            </div>
+                            <div>                                               
+                                    <p>${comic.title}</p>                               
+                            </div>
+                        </article>
+                        `;
 		});
+	});
 };
 
-buscarInfo('https://rickandmortyapi.com/api/character');
+buscarInfo('https://gateway.marvel.com/v1/public/comics?apikey=5815682df904a6080be6caaebd915b02');
 
 const botonBuscar = document.querySelector('.buscar');
 
 botonBuscar.onclick = (e) => {
 	e.preventDefault();
 };
+// para filtrar por comic y traer informacion del personaje y etc y eliminar los demas comics, debere hacer otro fetch

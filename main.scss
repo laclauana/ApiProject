@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
+
 ::-webkit-scrollbar {
 	width: 12px;
 }
@@ -43,7 +45,7 @@
 body {
 	background-color: limegreen;
 	margin: 0;
-	@include letra(0.9em, "Verdana", #fff);
+	@include letra(0.9em, 'Hachi Maru Pop', #fff);
 	overflow-x: hidden;
 }
 
@@ -56,7 +58,7 @@ footer {
 input::placeholder,
 input[type="text"] {
 	width: 25rem;
-	@include letra(1rem, 'verdana', darkblue);
+	@include letra(1rem, 'Hachi Maru Pop', darkblue);
 }
 
 section:not(section:first-child) {
@@ -65,34 +67,35 @@ section:not(section:first-child) {
 	justify-content: center;
 	article {
 		@extend %centrar-info;
-		@include disenio-tarjeta(limegreen, 6px);
+		@include disenio-tarjeta(limegreen, 10px);
 		&:hover {
 			transform: skew(1deg) scale(1.02);
 			transition: 0.07s;
 		}
+
 		.imagen {
 			width: 100%;
 			overflow: hidden;
+
 			img {
 				width: 100%;
-				// height: auto;
 			}
 		}
-		.info {
-			padding: 20px;
-			.estado {
-				display: flex;
-			}
+
+		p {
+			margin: 0;
 		}
 	}
-	p {
-		margin: 0;
-	}
+}
+
+button {
+	@include letra(1.2rem, 'Hachi Maru Pop', brown);
 }
 
 a {
 	cursor: pointer;
-	@include letra(1.5rem, 'Verdana', darkgreen);
+	@include letra(1.5rem, 'Hachi Maru Pop', darkgreen);
+	margin: 2em;
 }
 
 .header-image {
@@ -111,6 +114,20 @@ a {
 	option,
 	label,
 	select {
-		@include letra(1rem, 'verdana', darkblue);
+		@include letra(1rem, 'Hachi Maru Pop', darkblue);
 	}
+	div {
+		display: flex;
+		align-items: center;
+	}
+	h2 {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.segunda-seccion {
+	display: flex;
+	flex-direction: column;
+	margin: 3em;
 }
