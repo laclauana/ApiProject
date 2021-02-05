@@ -58,7 +58,13 @@ footer {
 input::placeholder,
 input[type="text"] {
 	width: 25rem;
-	@include letra(1rem, 'Hachi Maru Pop', darkblue);
+	@include letra(1rem, 'Hachi Maru Pop', darkgreen);
+}
+
+input:focus {
+	outline: none !important;
+	border-radius: 6px;
+	border: 2px solid red;
 }
 
 section:not(section:first-child) {
@@ -89,14 +95,21 @@ section:not(section:first-child) {
 }
 
 button {
-	@include letra(1.2rem, 'Hachi Maru Pop', brown);
+	background-color: #1b411d;
+	border-radius: 6px;
+	padding: 8px 15px;
+	cursor: pointer;
+	@include letra(1.2rem, 'Hachi Maru Pop', white);
+	margin: 2em;
+	&:hover {
+		background-color: red;
+	}
 }
 
-a {
-	cursor: pointer;
-	@include letra(1.5rem, 'Hachi Maru Pop', darkgreen);
-	margin: 2em;
-}
+// a {
+// 	cursor: pointer;
+// 	@include letra(1.5rem, 'Hachi Maru Pop', darkgreen);
+// }
 
 .header-image {
 	width: 100%;

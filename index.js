@@ -1,9 +1,14 @@
-const link = document.createElement('a');
+const link = document.createElement('button');
 const body = document.body;
+const urlBase = 'https://gateway.marvel.com/v1/public/';
+const apiKey = '5815682df904a6080be6caaebd915b02';
+const comicsPorPagina = 20;
+let paginaActual = 0;
+
 body.appendChild(link);
 link.setAttribute('id', 'prox');
 console.log(link.id);
-link.textContent = 'Proxima pagina';
+link.textContent = '>';
 
 const buscarInfo = (URL) => {
 	fetch(URL).then((res) => res.json()).then((comic) => {
@@ -12,10 +17,13 @@ const buscarInfo = (URL) => {
 
 		const seccion = document.querySelector('.resultados');
 		const link = document.querySelector('#prox');
-		// link.href = comic.data.next;
+
 		link.onclick = (e) => {
 			e.preventDefault();
-			// buscarInfo(comic.data.next);
+			paginaActual++;
+			buscarInfo(
+				`${urlBase + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + paginaActual * comicsPorPagina}`
+			);
 		};
 
 		seccion.innerHTML = '';
@@ -35,11 +43,22 @@ const buscarInfo = (URL) => {
 	});
 };
 
-buscarInfo('https://gateway.marvel.com/v1/public/comics?apikey=5815682df904a6080be6caaebd915b02');
+buscarInfo(`${urlBase + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + paginaActual * comicsPorPagina}`);
 
 const botonBuscar = document.querySelector('.buscar');
 
 botonBuscar.onclick = (e) => {
 	e.preventDefault();
 };
-// para filtrar por comic y traer informacion del personaje y etc y eliminar los demas comics, debere hacer otro fetch
+
+const buscarPersonajes = (paginaActual) => {
+	fetch(`${paginaActual * comicsPorPagina}`).then((res) => res.json()).then((data) => {
+		console.log(data);
+		personajes = data.data.results;
+		const seccion = document.querySelector('.resultados');
+		seccion.innerHTML = '';
+		personajes.map((personaje) => {
+			seccion.innerHTML += `<p>${personaje.name}</p>`;
+		});
+	});
+};
