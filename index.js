@@ -7,14 +7,12 @@ let paginaActual = 0;
 
 body.appendChild(link);
 link.setAttribute('id', 'prox');
-console.log(link.id);
 link.textContent = '>';
 
 const buscarInfo = (URL) => {
-	fetch(URL).then((res) => res.json()).then((comic) => {
-		console.log(comic);
-		comics = comic.data.results;
-
+	fetch(URL).then((res) => res.json()).then((data) => {
+		console.log(data);
+		const comics = data.data.results;
 		const seccion = document.querySelector('.resultados');
 		const link = document.querySelector('#prox');
 
@@ -45,7 +43,23 @@ const buscarInfo = (URL) => {
 
 buscarInfo(`${urlBase + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + paginaActual * comicsPorPagina}`);
 
+const inputBusqueda = document.querySelector('#input-busqueda');
+inputBusqueda.oninput = () => {
+	console.log(inputBusqueda.value);
+};
+const selectTipo = document.querySelector('#tipo');
+const selectOrden = document.querySelector('#orden');
 const botonBuscar = document.querySelector('.buscar');
+
+selectTipo.onchange = () => {
+	const opcionTipo = selectTipo.options[selectTipo.selectedIndex].value;
+	console.log(opcionTipo);
+};
+
+selectOrden.onchange = () => {
+	const opcionOrden = selectOrden.options[selectOrden.selectedIndex].value;
+	console.log(opcionOrden);
+};
 
 botonBuscar.onclick = (e) => {
 	e.preventDefault();
