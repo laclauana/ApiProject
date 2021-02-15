@@ -62,6 +62,10 @@ footer strong {
   letter-spacing: 2px;
   text-shadow: red 2px 2px;
 }
+h1 strong::selection,
+footer strong::selection {
+  background-color: #e21a3b;
+}
 
 .header {
   opacity: 2;
@@ -160,7 +164,7 @@ input:focus {
 @media (min-width: 900px) {
   .imglupa {
     left: 9%;
-    top: 94%;
+    top: 91%;
   }
 }
 @media (min-width: 600px) and (max-width: 900px) {

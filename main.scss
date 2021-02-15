@@ -1,6 +1,7 @@
 // ------------------------ variables, imports, mixins y extends ----------------------------
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Reggae+One&display=swap');
+
 $tipografia-principal: 'Hachi Maru Pop';
 $tipografia-secundaria: 'Reggae One', cursive;
 $sombra: blanchedalmond 1px 1px;
@@ -80,9 +81,9 @@ footer {
 		@include letra(1em, $tipografia-principal, white);
 		letter-spacing: 2px;
 		text-shadow: $color-contraste 2px 2px;
-		// &:hover {
-
-		// }
+		&::selection {
+			background-color: rgb(226, 26, 59);
+		}
 	}
 }
 
@@ -166,7 +167,7 @@ input:focus {
 	width: 2vw;
 	@media (min-width: 900px) {
 		left: 9%;
-		top: 94%;
+		top: 91%;
 	}
 	@media (min-width: 600px) and (max-width: 900px) {
 		left: 22%;
