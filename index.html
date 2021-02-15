@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marvel Comics</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
@@ -35,8 +36,11 @@
             <!-- -------------------- filtros de búsqueda ------------------------- -->
             <form>
                 <div>
-                    <label for="busqueda"><input id="input-busqueda" type="text"
-                            placeholder="Ingresá tu búsqueda"></label>
+                    <label for="busqueda">
+                        <input id="input-busqueda" type="text" placeholder="Ingresá tu búsqueda"><img class="imglupa"
+                            src="./assets/loupe.svg" alt="lupa">
+
+                    </label>
                 </div>
                 <div>
                     <label for="select">TIPO
@@ -73,14 +77,22 @@
     <script src="index.js"></script>
 
     <div class="centrar-boton" id="link">
-        <button>></button>
-
+        <button>
+            << </button>
+                <button>
+                    < </button>
+                        <button>></button>
+                        <button>>></button>
     </div>
 
     <!-- ---------------------------- mini footer ------------------------------ -->
+
     <footer>
-        Cuál será tu próxima aventura?
+        <div>
+            De <strong> anaclette </strong> para vos
+        </div>
     </footer>
+
 </body>
 
 </html>

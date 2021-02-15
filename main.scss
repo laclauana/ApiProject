@@ -1,6 +1,8 @@
 // ------------------------ variables, imports, mixins y extends ----------------------------
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Reggae+One&display=swap');
 $tipografia-principal: 'Hachi Maru Pop';
+$tipografia-secundaria: 'Reggae One', cursive;
 $sombra: blanchedalmond 1px 1px;
 $color-fondo: rgb(31, 105, 31);
 $color-contraste: red;
@@ -27,19 +29,16 @@ $color-contraste: red;
 	display: flex;
 	justify-content: center;
 	margin: 0;
-	height: 3rem;
+	height: 2em;
 	align-items: center;
 	color: white;
+	text-align: center;
+	width: 100%;
 }
 
 %centrar-info {
 	display: flex;
 	justify-content: center;
-}
-
-%columna {
-	display: flex;
-	flex-direction: column;
 }
 
 // --------------------------- diseño de scrollbar y body -------------------
@@ -64,7 +63,7 @@ body {
 	background-color: $color-fondo;
 	margin: 0;
 	overflow-x: hidden;
-	@include letra(1rem, $tipografia-principal, white);
+	@include letra(1rem, $tipografia-secundaria, white);
 	@media (max-width: 600px) {
 		font-size: 70%;
 	}
@@ -75,23 +74,16 @@ body {
 h1,
 footer {
 	@extend %alineacion-header-footer;
+	@include letra(2em, $tipografia-secundaria, white);
 	background-color: black;
-}
+	strong {
+		@include letra(1em, $tipografia-principal, white);
+		letter-spacing: 2px;
+		text-shadow: $color-contraste 2px 2px;
+		// &:hover {
 
-input {
-	outline: 0;
-	border-width: 0 0 2px;
-	background-color: $color-fondo;
-}
-
-input::placeholder,
-input[type="text"] {
-	width: 80vh;
-	@include letra(1.5rem, $tipografia-principal, white);
-}
-
-input:focus {
-	@include contorno-input(none !important, 6px, 2px solid $color-contraste);
+		// }
+	}
 }
 
 .header {
@@ -103,7 +95,6 @@ input:focus {
 .header-image {
 	background-image: linear-gradient(rgba(0, 0, 0, 0.596), rgba(0, 0, 0, 0.582)), url('./assets/hero.jpg');
 	width: 100%;
-	text-align: center;
 	height: 64vh;
 	background-size: cover;
 }
@@ -112,7 +103,7 @@ form {
 	display: flex;
 	justify-content: space-evenly;
 	label {
-		@include letra(1rem, $tipografia-principal, white);
+		@include letra(1rem, $tipografia-secundaria, white);
 	}
 	select {
 		@include letra(0.9em, $tipografia-principal, white);
@@ -124,10 +115,15 @@ form {
 		}
 	}
 	div {
-		display: flex;
+		@extend %centrar-info;
 		align-items: center;
-		justify-content: center;
+		flex-wrap: wrap;
 	}
+	@media (min-width: 600px) and (max-width: 900px) {
+		flex-direction: column;
+		align-items: center;
+	}
+
 	@media (max-width: 600px) {
 		flex-direction: column;
 		div {
@@ -135,27 +131,50 @@ form {
 			label {
 				display: flex;
 				flex-direction: column;
-
 				select {
-					margin: 1vh;
+					margin: 0.5vh;
 					width: 7rem;
 				}
 			}
-			input[type="text"] {
-				width: 20rem;
-			}
-			.buscar {
-				font-size: 1em;
-			}
 		}
 	}
-	@media (min-width: 900px) and (max-width: 1260px) {
-		flex-direction: column;
-		align-items: center;
+}
+
+input {
+	outline: 0;
+	border-width: 0 0 2px;
+	background-color: $color-fondo;
+}
+
+input::placeholder,
+input[type="text"] {
+	width: 77vh;
+	text-align: center;
+	@include letra(1.5rem, $tipografia-principal, white);
+	@media (max-width: 600px) {
+		font-size: 3vh;
+		max-width: 50vh;
+	}
+}
+
+input:focus {
+	@include contorno-input(none !important, 6px, 2px solid $color-contraste);
+}
+
+.imglupa {
+	position: absolute;
+	width: 2vw;
+	@media (min-width: 900px) {
+		left: 9%;
+		top: 94%;
 	}
 	@media (min-width: 600px) and (max-width: 900px) {
-		flex-direction: column;
-		align-items: center;
+		left: 22%;
+		top: 88%;
+	}
+	@media (max-width: 600px) {
+		left: 20%;
+		top: 82%;
 	}
 }
 
@@ -213,14 +232,17 @@ button {
 	padding: 8px 15px;
 	cursor: pointer;
 	@include letra(1.2rem, $tipografia-principal, white);
-	margin: 2em;
+	margin: 1em;
 	&:hover {
 		background-color: $color-contraste;
 		transition: 0.2s;
 	}
+	@media (max-width: 600px) {
+		font-size: 1em;
+	}
 }
 
 .centrar-boton {
-	@extend %columna;
-	align-items: center;
+	@extend %centrar-info;
+	margin: 5em;
 }
