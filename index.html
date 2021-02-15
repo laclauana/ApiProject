@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <!-- --------------- encabezado sitio ---------------------- -->
     <header>
         <div>
             <h1>
@@ -26,9 +27,13 @@
     </header>
 
     <main>
+        <!-- -------------------- primera sección --------------------- -->
         <section>
-            <form action="get" class="form">
+            <div class="titulo">
                 <h2>Búsqueda</h2>
+            </div>
+            <!-- -------------------- filtros de búsqueda ------------------------- -->
+            <form>
                 <div>
                     <label for="busqueda"><input id="input-busqueda" type="text"
                             placeholder="Ingresá tu búsqueda"></label>
@@ -48,24 +53,31 @@
                             <option value="mas-viejos">Más viejos</option>
                         </select>
                     </label>
-                </div>
-                <div>
                     <button class="buscar">BUSCAR</button>
                 </div>
             </form>
         </section>
+        <!-- ---------------------------- segunda sección ----------------------------- -->
 
-        <div class="segunda-seccion">
+        <!-- -------------------------- encabezado --------------------------------- -->
+        <div class="titulo">
             <h2>Resultados</h2>
             <p>${cantidad} RESULTADOS</p>
         </div>
 
+        <!-- ---------------------- cuerpo principal dedicado a los Comics o tarjetas ------------------- -->
         <section class="resultados">
         </section>
     </main>
 
     <script src="index.js"></script>
 
+    <div class="centrar-boton" id="link">
+        <button>></button>
+
+    </div>
+
+    <!-- ---------------------------- mini footer ------------------------------ -->
     <footer>
         Cuál será tu próxima aventura?
     </footer>
