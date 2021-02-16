@@ -6,7 +6,7 @@ let paginaActual = 0;
 const buscarInfo = (URL) => {
 	fetch(URL).then((res) => res.json()).then((data) => {
 		// console.log(data);
-		const link = document.querySelector('#link');
+		const siguiente = document.querySelector('#siguiente');
 		const seccion = document.querySelector('.resultados');
 		const comics = data.data.results;
 
@@ -24,7 +24,7 @@ const buscarInfo = (URL) => {
                         `;
 		});
 
-		link.onclick = () => {
+		siguiente.onclick = () => {
 			paginaActual++;
 			buscarInfo(
 				`${urlBase + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + paginaActual * comicsPorPagina}`

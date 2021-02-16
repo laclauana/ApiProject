@@ -104,12 +104,15 @@ form select:focus {
 }
 form div {
   align-items: center;
-  flex-wrap: wrap;
+}
+@media (max-width: 900px) {
+  form div {
+    flex-wrap: wrap;
+  }
 }
 @media (min-width: 600px) and (max-width: 900px) {
   form {
     flex-direction: column;
-    align-items: center;
   }
 }
 @media (max-width: 600px) {
