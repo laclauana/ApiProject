@@ -151,6 +151,7 @@ input::placeholder,
 input[type="text"] {
 	width: 77vh;
 	text-align: center;
+	position: relative;
 	@include letra(1.5rem, $tipografia-principal, white);
 	@media (max-width: 600px) {
 		font-size: 3vh;
@@ -164,18 +165,18 @@ input:focus {
 
 .imglupa {
 	position: absolute;
-	width: 2vw;
+	width: 30px;
 	@media (min-width: 900px) {
-		left: 9%;
-		top: 91%;
+		left: 45px;
+		top: 615px;
 	}
 	@media (min-width: 600px) and (max-width: 900px) {
-		left: 22%;
-		top: 88%;
+		left: 170px;
+		top: 583px;
 	}
 	@media (max-width: 600px) {
-		left: 20%;
-		top: 82%;
+		left: 85px;
+		top: 550px;
 	}
 }
 
