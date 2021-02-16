@@ -137,9 +137,8 @@ input {
 
 input::placeholder,
 input[type=text] {
-  width: 77vh;
+  width: 73vh;
   text-align: center;
-  position: relative;
   font-size: 1.5rem;
   font-family: "Hachi Maru Pop";
   color: white;
@@ -158,26 +157,19 @@ input:focus {
   border: 2px solid red;
 }
 
-.imglupa {
+.contenedor-lupa {
+  position: relative;
+}
+.contenedor-lupa img {
   position: absolute;
   width: 30px;
-}
-@media (min-width: 900px) {
-  .imglupa {
-    left: 45px;
-    top: 615px;
-  }
-}
-@media (min-width: 600px) and (max-width: 900px) {
-  .imglupa {
-    left: 170px;
-    top: 583px;
-  }
+  left: 45px;
+  top: 10px;
 }
 @media (max-width: 600px) {
-  .imglupa {
-    left: 85px;
-    top: 550px;
+  .contenedor-lupa img {
+    left: 8px;
+    top: 5px;
   }
 }
 
