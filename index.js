@@ -2,6 +2,12 @@ const urlBase = 'https://gateway.marvel.com/v1/public/';
 const apiKey = '5815682df904a6080be6caaebd915b02';
 const comicsPorPagina = 20;
 let paginaActual = 0;
+// const paginasAtras = document.querySelector('#saltear-atras');
+// const paginasAdelante = document.querySelector('#saltear-adelante');
+// const atras = document.querySelector('#atras');
+// console.log(paginasAdelante);
+// console.log(paginasAtras);
+// console.log(atras);
 
 const buscarInfo = (URL) => {
 	fetch(URL).then((res) => res.json()).then((data) => {
@@ -24,11 +30,37 @@ const buscarInfo = (URL) => {
                         `;
 		});
 
+		const comicsMostrados = document.querySelector('.titulo > p');
+		comicsMostrados.innerHTML = '';
+		let cantidadComics = data.data.total;
+		comicsMostrados.textContent = `Mostrando ${cantidadComics} resultados`;
 		siguiente.onclick = () => {
 			paginaActual++;
 			buscarInfo(
 				`${urlBase + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + paginaActual * comicsPorPagina}`
 			);
+		};
+
+		const primeraPagina = document.querySelector('#primera-pagina');
+		const ultimaPagina = document.querySelector('#ultima-pagina');
+		const atras = document.querySelector('#atras');
+		ultimaPagina.onclick = () => {
+			paginaActual += 2;
+			console.log('paginas adelante', paginaActual);
+			buscarInfo(
+				`${urlBase + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + paginaActual * comicsPorPagina}`
+			);
+		};
+
+		atras.onclick = () => {
+			paginaActual--;
+			buscarInfo(
+				`${urlBase + 'comics?apikey=' + apiKey + 'orderBy=title&offset' + paginaActual * comicsPorPagina}`
+			);
+		};
+
+		primeraPagina.onclick = () => {
+			paginaActual = 0;
 		};
 
 		const comicsHTML = document.querySelectorAll('.comic');
@@ -49,10 +81,6 @@ const buscarInfo = (URL) => {
 		// seccion.innerHTML +=
 		// NUEVO ARTICLE CON EL DATACOMIC
 		// mismo procedimiento con dataComicPersonaje
-
-		// funciones reutilizables
-		// 	};
-		// });
 	});
 };
 
