@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <!-- --------------- encabezado sitio ---------------------- -->
+    <!-- --------------- Header ---------------------- -->
     <header>
         <div>
             <h1>
@@ -27,68 +27,70 @@
     </header>
 
     <main>
-        <!-- -------------------- primera sección --------------------- -->
+        <!-- -------------------- First section --------------------- -->
         <section>
-            <div class="titulo">
+            <div class="title">
                 <h2>Búsqueda</h2>
             </div>
-            <!-- -------------------- filtros de búsqueda ------------------------- -->
+            <!-- -------------------- Searching filters ------------------------- -->
             <form>
                 <div>
-                    <label for="busqueda" class="contenedor-lupa">
-                        <input id="input-busqueda" type="text" placeholder="Ingresá tu búsqueda"><img
+                    <label for="search" class="loupe-container">
+                        <input id="search-input" type="text" placeholder="Ingresá tu búsqueda"><img
                             src="./assets/loupe.svg" alt="lupa">
 
                     </label>
                 </div>
                 <div>
                     <label for="select">TIPO
-                        <select name="TIPO" id="tipo">
-                            <option value="COMICS">COMICS</option>
-                            <option value="PERSONAJES">PERSONAJES</option>
+                        <select name="type" id="type">
+                            <option value="comics">COMICS</option>
+                            <option value="characters">PERSONAJES</option>
                         </select>
                     </label>
                     <label for="select">ORDEN
-                        <select name="ORDEN" id="orden">
+                        <select name="order" id="order">
                             <option value="A-Z">A-Z</option>
                             <option value="Z-A">Z-A</option>
-                            <option value="mas-nuevos">Más nuevos</option>
-                            <option value="mas-viejos">Más viejos</option>
+                            <option value="most-updated-ones">Más nuevos</option>
+                            <option value="most-old-ones">Más viejos</option>
                         </select>
                     </label>
-                    <button class="buscar">BUSCAR</button>
+                    <button class="search">BUSCAR</button>
                 </div>
             </form>
         </section>
-        <!-- ---------------------------- segunda sección ----------------------------- -->
 
-        <!-- -------------------------- encabezado --------------------------------- -->
-        <div class="titulo">
+        <!-- -------------------------- Main section introduction --------------------------------- -->
+        <div class="title">
             <h2>Resultados</h2>
-            <p>${cantidad} RESULTADOS</p>
+            <p></p>
         </div>
 
-        <!-- ---------------------- cuerpo principal dedicado a los Comics o tarjetas ------------------- -->
-        <section class="resultados">
-        </section>
+        <!-- ---------------------- Main section with fetch results: comics or characters ------------------- -->
+
+        <section class="results"></section>
+
     </main>
 
     <script src="index.js"></script>
 
-    <div class="centrar-boton">
-        <button id="primera-pagina">
+    <!-- ---------------------------- Pagination buttons ---------------------------------- -->
+
+    <div class="center-button">
+        <button id="first-page">
             << </button>
-                <button id="atras">
+                <button id="previous-page">
                     < </button>
-                        <button id="siguiente">></button>
-                        <button id="ultima-pagina">>></button>
+                        <button id="next-page">></button>
+                        <button id="last-page">>></button>
     </div>
 
-    <!-- ---------------------------- mini footer ------------------------------ -->
+    <!-- ---------------------------- Tiny footer ------------------------------ -->
 
     <footer>
         <div>
-            De <strong> anaclette </strong> para vos
+            Hecho por <strong>anaclette</strong>
         </div>
     </footer>
 

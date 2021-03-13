@@ -12,7 +12,7 @@ footer {
   width: 100%;
 }
 
-.centrar-boton, section:not(section:first-child), form div {
+.center-button, section:not(section:first-child), form div {
   display: flex;
   justify-content: center;
 }
@@ -160,23 +160,23 @@ input:focus {
   border: 2px solid red;
 }
 
-.contenedor-lupa {
+.loupe-container {
   position: relative;
 }
-.contenedor-lupa img {
+.loupe-container img {
   position: absolute;
   width: 30px;
-  left: 45px;
+  left: 25px;
   top: 10px;
 }
 @media (max-width: 600px) {
-  .contenedor-lupa img {
+  .loupe-container img {
     left: 8px;
     top: 5px;
   }
 }
 
-.titulo {
+.title {
   margin-left: 5vw;
 }
 
@@ -199,7 +199,7 @@ section:not(section:first-child) article {
 section:not(section:first-child) article:hover {
   cursor: pointer;
 }
-section:not(section:first-child) article:hover .imagen {
+section:not(section:first-child) article:hover .img-container {
   transform: skew(1deg) scale(1.02);
   transition: 0.09s;
 }
@@ -209,11 +209,11 @@ section:not(section:first-child) article:hover p {
   text-shadow: blanchedalmond 1px 1px;
   font-weight: bolder;
 }
-section:not(section:first-child) article .imagen {
+section:not(section:first-child) article .img-container {
   width: 100%;
   overflow: hidden;
 }
-section:not(section:first-child) article .imagen img {
+section:not(section:first-child) article .img-container img {
   width: 100%;
 }
 @media (max-width: 600px) {
@@ -242,7 +242,7 @@ button:hover {
   }
 }
 
-.centrar-boton {
+.center-button {
   margin: 5em;
 }
 

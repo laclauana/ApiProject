@@ -1,32 +1,32 @@
-// ------------------------ variables, imports, mixins y extends ----------------------------
+// ------------------------ Single variables, imports, mixins and extends ----------------------------
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Reggae+One&display=swap');
 
-$tipografia-principal: 'Hachi Maru Pop';
-$tipografia-secundaria: 'Reggae One', cursive;
-$sombra: blanchedalmond 1px 1px;
-$color-fondo: rgb(31, 105, 31);
-$color-contraste: red;
+$main-typography: 'Hachi Maru Pop';
+$secondary-typography: 'Reggae One', cursive;
+$shadow: blanchedalmond 1px 1px;
+$background-colour: rgb(31, 105, 31);
+$contrast-colour: red;
 
-@mixin letra($tamanio-letra, $tipografia, $color) {
-	font-size: $tamanio-letra;
-	font-family: $tipografia;
-	color: $color;
+@mixin letter($letter-sizing, $typography, $colour) {
+	font-size: $letter-sizing;
+	font-family: $typography;
+	color: $colour;
 }
 
-@mixin disenio-tarjeta($color-fondo, $radio) {
-	background-color: $color-fondo;
-	border-radius: $radio;
+@mixin card-design($background-colour, $radius) {
+	background-color: $background-colour;
+	border-radius: $radius;
 	margin: 10px;
 }
 
-@mixin contorno-input($borde, $radio, $look-borde) {
-	outline: $borde;
-	border-radius: $radio;
-	border: $look-borde;
+@mixin input-border($border, $radius, $border-style) {
+	outline: $border;
+	border-radius: $radius;
+	border: $border-style;
 }
 
-%alineacion-header-footer {
+%header-footer-alignment {
 	display: flex;
 	justify-content: center;
 	margin: 0;
@@ -37,12 +37,12 @@ $color-contraste: red;
 	width: 100%;
 }
 
-%centrar-info {
+%center-info {
 	display: flex;
 	justify-content: center;
 }
 
-// --------------------------- diseño de scrollbar y body -------------------
+// --------------------------- Scrollbar and body general design -------------------
 
 ::-webkit-scrollbar {
 	width: 12px;
@@ -56,31 +56,31 @@ $color-contraste: red;
 	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 	border-radius: 10px;
 	&:hover {
-		background-color: $color-contraste;
+		background-color: $contrast-colour;
 	}
 }
 
 body {
-	background-color: $color-fondo;
+	background-color: $background-colour;
 	margin: 0;
 	overflow-x: hidden;
-	@include letra(1rem, $tipografia-secundaria, white);
+	@include letter(1rem, $secondary-typography, white);
 	@media (max-width: 600px) {
 		font-size: 70%;
 	}
 }
 
-// --------------------- diseño de encabezado, footer y filtros de búsqueda ------------------
+// --------------------- Header, footer and searching filters ------------------
 
 h1,
 footer {
-	@extend %alineacion-header-footer;
-	@include letra(2em, $tipografia-secundaria, white);
+	@extend %header-footer-alignment;
+	@include letter(2em, $secondary-typography, white);
 	background-color: black;
 	strong {
-		@include letra(1em, $tipografia-principal, white);
+		@include letter(1em, $main-typography, white);
 		letter-spacing: 2px;
-		text-shadow: $color-contraste 2px 2px;
+		text-shadow: $contrast-colour 2px 2px;
 		&::selection {
 			background-color: rgb(226, 26, 59);
 		}
@@ -104,19 +104,19 @@ form {
 	display: flex;
 	justify-content: space-evenly;
 	label {
-		@include letra(1rem, $tipografia-secundaria, white);
+		@include letter(1rem, $secondary-typography, white);
 	}
 	select {
-		@include letra(0.9em, $tipografia-principal, white);
+		@include letter(0.9em, $main-typography, white);
 		border: none;
-		background-color: $color-fondo;
+		background-color: $background-colour;
 		font-weight: bolder;
 		&:focus {
-			@include contorno-input(none !important, 6px, 2px solid $color-contraste);
+			@include input-border(none !important, 6px, 2px solid $contrast-colour);
 		}
 	}
 	div {
-		@extend %centrar-info;
+		@extend %center-info;
 		align-items: center;
 		@media (max-width: 900px) {
 			flex-wrap: wrap;
@@ -145,14 +145,14 @@ form {
 input {
 	outline: 0;
 	border-width: 0 0 2px;
-	background-color: $color-fondo;
+	background-color: $background-colour;
 }
 
 input::placeholder,
 input[type="text"] {
 	width: 73vh;
 	text-align: center;
-	@include letra(1.5rem, $tipografia-principal, white);
+	@include letter(1.5rem, $main-typography, white);
 	@media (max-width: 600px) {
 		font-size: 3vh;
 		max-width: 50vh;
@@ -160,15 +160,15 @@ input[type="text"] {
 }
 
 input:focus {
-	@include contorno-input(none !important, 6px, 2px solid $color-contraste);
+	@include input-border(none !important, 6px, 2px solid $contrast-colour);
 }
 
-.contenedor-lupa {
+.loupe-container {
 	position: relative;
 	img {
 		position: absolute;
 		width: 30px;
-		left: 45px;
+		left: 25px;
 		top: 10px;
 		@media (max-width: 600px) {
 			left: 8px;
@@ -177,16 +177,16 @@ input:focus {
 	}
 }
 
-// -------------------------- Títulos introductorios --------------------
+// -------------------------- Titles --------------------
 
-.titulo {
+.title {
 	margin-left: 5vw;
 }
 
-// ---------------------------- sección de comics ------------------------
+// ---------------------------- Comics cards section ------------------------
 
 section:not(section:first-child) {
-	@extend %centrar-info;
+	@extend %center-info;
 	flex-wrap: wrap;
 	@media (min-width: 600px) and (max-width: 900px) {
 		justify-content: space-evenly;
@@ -194,23 +194,23 @@ section:not(section:first-child) {
 	article {
 		width: 15.5%;
 		align-items: center;
-		@include disenio-tarjeta($color-fondo, 10px);
+		@include card-design($background-colour, 10px);
 		margin-bottom: 5em;
 		&:hover {
 			cursor: pointer;
-			.imagen {
+			.img-container {
 				transform: skew(1deg) scale(1.02);
 				transition: 0.09s;
 			}
 			p {
 				transition: 0.2s;
-				color: $color-contraste;
-				text-shadow: $sombra;
+				color: $contrast-colour;
+				text-shadow: $shadow;
 				font-weight: bolder;
 			}
 		}
 
-		.imagen {
+		.img-container {
 			width: 100%;
 			overflow: hidden;
 			img {
@@ -223,17 +223,17 @@ section:not(section:first-child) {
 	}
 }
 
-// -------------------------- botones ----------------------
+// -------------------------- Buttons ----------------------
 
 button {
 	background-color: #1b411d;
 	border-radius: 6px;
 	padding: 8px 15px;
 	cursor: pointer;
-	@include letra(1.2rem, $tipografia-principal, white);
+	@include letter(1.2rem, $main-typography, white);
 	margin: 1em;
 	&:hover {
-		background-color: $color-contraste;
+		background-color: $contrast-colour;
 		transition: 0.2s;
 	}
 	@media (max-width: 600px) {
@@ -241,7 +241,7 @@ button {
 	}
 }
 
-.centrar-boton {
-	@extend %centrar-info;
+.center-button {
+	@extend %center-info;
 	margin: 5em;
 }
