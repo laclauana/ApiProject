@@ -188,7 +188,7 @@ section:not(section:first-child) {
     justify-content: space-evenly;
   }
 }
-section:not(section:first-child) article {
+section:not(section:first-child) .comic {
   width: 15.5%;
   align-items: center;
   background-color: #1f691f;
@@ -196,30 +196,45 @@ section:not(section:first-child) article {
   margin: 10px;
   margin-bottom: 5em;
 }
-section:not(section:first-child) article:hover {
+section:not(section:first-child) .comic:hover {
   cursor: pointer;
 }
-section:not(section:first-child) article:hover .img-container {
+section:not(section:first-child) .comic:hover .img-container {
   transform: skew(1deg) scale(1.02);
   transition: 0.09s;
 }
-section:not(section:first-child) article:hover p {
+section:not(section:first-child) .comic:hover p {
   transition: 0.2s;
   color: red;
   text-shadow: blanchedalmond 1px 1px;
   font-weight: bolder;
 }
-section:not(section:first-child) article .img-container {
+section:not(section:first-child) .comic .img-container {
   width: 100%;
   overflow: hidden;
 }
-section:not(section:first-child) article .img-container img {
+section:not(section:first-child) .comic .img-container img {
   width: 100%;
 }
 @media (max-width: 600px) {
-  section:not(section:first-child) article {
+  section:not(section:first-child) .comic {
     min-width: 25%;
   }
+}
+
+.picked-comic {
+  display: flex;
+}
+.picked-comic .img-container img {
+  width: 300px;
+}
+.picked-comic div {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.picked-comic div p:nth-child(odd) {
+  font-family: "Hachi Maru Pop";
 }
 
 button {

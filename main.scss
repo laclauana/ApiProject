@@ -191,7 +191,7 @@ section:not(section:first-child) {
 	@media (min-width: 600px) and (max-width: 900px) {
 		justify-content: space-evenly;
 	}
-	article {
+	.comic {
 		width: 15.5%;
 		align-items: center;
 		@include card-design($background-colour, 10px);
@@ -219,6 +219,23 @@ section:not(section:first-child) {
 		}
 		@media (max-width: 600px) {
 			min-width: 25%;
+		}
+	}
+}
+
+.picked-comic {
+	display: flex;
+	.img-container {
+		img {
+			width: 300px;
+		}
+	}
+	div {
+		margin: 20px;
+		display: flex;
+		flex-direction: column;
+		p:nth-child(odd) {
+			font-family: $main-typography;
 		}
 	}
 }
