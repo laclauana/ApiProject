@@ -44,7 +44,7 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
 						// console.log(comic);
 						// console.log('hiciste click a un comic');
 						console.log(comic.dataset.id);
-						htmlCards();
+						htmlCards(collection, comic.dataset.id);
 					};
 				});
 				updatePagination(collection);
@@ -55,31 +55,31 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
 
 fetchComics(`${baseURL + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + currentPage * cardsPerPage}`);
 
-const htmlCards = (collection = 'characters') => {
-	fetch(`${baseURL}${collection}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
-		const characters = json.data.results;
-		// console.log(characters);
-		characters.forEach((character) => {
+const htmlCards = (collection = 'comics', id) => {
+	fetch(`${baseURL}${collection}/${id}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
+		const pickedComic = json.data.results;
+		console.log(pickedComic);
+		pickedComic.map((comic) => {
 			resultsSection.innerHTML = '';
-			const date = new Date(character.modified);
+			const date = new Date(comic.modified);
 			return (resultsSection.innerHTML += `
-					<article class="comic" data-id=${character.id}>
+					<article class="comic" data-id=${comic.id}>
 						<div class="img-container">
-						<img src="${noAvailableImg(character)}" alt="imagen de ${character.name}"/>
+						<img src="${noAvailableImg(comic)}" alt="imagen de ${comic.title}"/>
 						</div>;
 							<div>
-							<p>${character.name}</p>
+							<p>${comic.title}</p>
 							</div>
 							<p>Publicado: ${date.toLocaleDateString() === 'Invalid Date' ? 'No disponible' : date.toLocaleDateString()}</p>
-							<p>Descripcion: ${character.description || 'No disponible'} </p>
+							<p>Descripcion: ${comic.description || 'No están estos resultados 😁'} </p>
 							</article>
 									
 					<article class="comic"
 					  <div class="img-container">
-						<img src="${noAvailableImg(character)}" alt="imagen de ${character.name}"/>
+						<img src="${noAvailableImg(comic)}" alt="imagen de ${comic.title}"/>
 					  </div>
 					  <div class="img-container">
-						<p>${character.name}</p>
+						<p>${comic.title}</p>
 					  </div>
 					</article>
 			`);
@@ -185,38 +185,6 @@ const noAvailableImg = (data) => {
 		? 'assets/img no disponible.jpg'
 		: `${data.thumbnail.path}.${data.thumbnail.extension}`;
 };
-
-// 	info.data.results.map((comic) => {
-// 		const writer = creatorsListHasWriter(comic);
-
-// 		const characters = comic.characters.available
-// 			? displayIncludedCharacters(comic, comic.id)
-// 			: updateAvailableCharacters(comic);
-
-// 		return (resultsSection.innerHTML = `
-//     <article class="comic" id="${comic.id}">
-//       <div class="img-container">
-//         <img src="${imgURL}" alt="imagen de ${comic.title}"/>
-//       </div>
-//       <div>
-//       <p>
-//         ${comic.title}
-//       </p>
-//       <p>Publicado:</p>
-//       <p>${onSaleDate}</p>
-//       <p>Guionista/s:<p>
-//       <p>${writer}</p>
-//       <p>Descripción:</p>
-//       <p>${comic.description || `Descripción no disponible`}</p>
-//       </div>
-//     </article>`);
-// 	});
-// };
-
-// const updateAvailableCharacters = (comic) => {
-// 	totalItems = comic.characters.available;
-// 	shownComics.textContent = `Mostrando ${totalItems} resultados`;
-// };
 
 // const getCharacterInfo = (info) => {
 // 	clearSectionContent(charactersSection);
