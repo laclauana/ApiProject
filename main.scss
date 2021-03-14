@@ -183,7 +183,7 @@ input:focus {
 	margin-left: 5vw;
 }
 
-// ---------------------------- Comics cards section ------------------------
+// ---------------------------- Cards section ------------------------
 
 section:not(section:first-child) {
 	@extend %center-info;
@@ -195,7 +195,7 @@ section:not(section:first-child) {
 		width: 15.5%;
 		align-items: center;
 		@include card-design($background-colour, 10px);
-		margin-bottom: 5em;
+		height: 460px;
 		&:hover {
 			cursor: pointer;
 			.img-container {
@@ -217,25 +217,66 @@ section:not(section:first-child) {
 				width: 100%;
 			}
 		}
+		@media (max-width: 900px) {
+			height: 300px;
+			font-size: 13px;
+		}
 		@media (max-width: 600px) {
 			min-width: 25%;
+			height: 300px;
+			font-size: 10px;
 		}
 	}
 }
 
 .picked-comic {
 	display: flex;
+	div {
+		margin: 20px;
+		p:nth-child(odd) {
+			font-family: $main-typography;
+		}
+	}
 	.img-container {
 		img {
 			width: 300px;
 		}
 	}
-	div {
-		margin: 20px;
-		display: flex;
-		flex-direction: column;
-		p:nth-child(odd) {
-			font-family: $main-typography;
+}
+
+.character {
+	display: flex;
+	flex-direction: column;
+	margin: 5px;
+	cursor: pointer;
+	.img-container {
+		width: 180px;
+		height: 350px;
+		img {
+			background-color: red;
+			padding-bottom: 5px;
+			width: 180px;
+			height: 250px;
+		}
+	}
+	div:last-child {
+		background-color: rgb(53, 50, 50);
+		h2 {
+			font-size: 15px;
+			margin: 10px;
+		}
+	}
+	&:hover {
+		.img-container {
+			overflow: hidden;
+			img {
+				transform: scale(1.1);
+				transition: 0.2s;
+			}
+		}
+		div:last-child {
+			background-color: red;
+			transition: 0.2s;
 		}
 	}
 }

@@ -194,7 +194,7 @@ section:not(section:first-child) .comic {
   background-color: #1f691f;
   border-radius: 10px;
   margin: 10px;
-  margin-bottom: 5em;
+  height: 460px;
 }
 section:not(section:first-child) .comic:hover {
   cursor: pointer;
@@ -216,25 +216,66 @@ section:not(section:first-child) .comic .img-container {
 section:not(section:first-child) .comic .img-container img {
   width: 100%;
 }
+@media (max-width: 900px) {
+  section:not(section:first-child) .comic {
+    height: 300px;
+    font-size: 13px;
+  }
+}
 @media (max-width: 600px) {
   section:not(section:first-child) .comic {
     min-width: 25%;
+    height: 300px;
+    font-size: 10px;
   }
 }
 
 .picked-comic {
   display: flex;
 }
-.picked-comic .img-container img {
-  width: 300px;
-}
 .picked-comic div {
   margin: 20px;
-  display: flex;
-  flex-direction: column;
 }
 .picked-comic div p:nth-child(odd) {
   font-family: "Hachi Maru Pop";
+}
+.picked-comic .img-container img {
+  width: 300px;
+}
+
+.character {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  cursor: pointer;
+}
+.character .img-container {
+  width: 180px;
+  height: 350px;
+}
+.character .img-container img {
+  background-color: red;
+  padding-bottom: 5px;
+  width: 180px;
+  height: 250px;
+}
+.character div:last-child {
+  background-color: #353232;
+}
+.character div:last-child h2 {
+  font-size: 15px;
+  margin: 10px;
+}
+.character:hover .img-container {
+  overflow: hidden;
+}
+.character:hover .img-container img {
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+.character:hover div:last-child {
+  background-color: red;
+  transition: 0.2s;
 }
 
 button {
