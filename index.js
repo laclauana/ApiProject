@@ -44,6 +44,7 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
 						// console.log(comic);
 						// console.log('hiciste click a un comic');
 						console.log(comic.dataset.id);
+						shownComics.textContent = '';
 						htmlCards(collection, comic.dataset.id);
 					};
 				});
@@ -60,6 +61,7 @@ const htmlCards = (collection = 'comics', id) => {
 		const pickedComic = json.data.results;
 		// console.log(pickedComic);
 		pickedComic.map((comic) => {
+			// fetchCharacters(collection, comic.id, comic.characters);
 			resultsSection.innerHTML = '';
 			const date = new Date(comic.modified);
 			return (resultsSection.innerHTML += `
@@ -85,8 +87,16 @@ const htmlCards = (collection = 'comics', id) => {
 									
 							`);
 		});
-		fetchCharacters(characters);
+		fetchCharacters();
 	});
+};
+
+const fetchCharacters = (collection = 'comics', comicId, characters) => {
+	fetch(`${baseURL}${collection}/${comicId}/${characters}?apikey=${apiKey}`)
+		.then((res) => res.json())
+		.then((json) => {
+			console.log(json.data.results);
+		});
 };
 
 const updateResultsQuantity = (collection) => {
