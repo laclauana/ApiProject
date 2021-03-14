@@ -59,15 +59,16 @@ fetchComics(`${baseURL + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + 
 const htmlCards = (collection = 'comics', id) => {
 	fetch(`${baseURL}${collection}/${id}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const pickedComic = json.data.results;
-		// console.log(pickedComic);
+		console.log(pickedComic);
+
 		pickedComic.map((comic) => {
-			// fetchCharacters(collection, comic.id, comic.characters);
+			fetchCharacters('comics', comic.id);
 			resultsSection.innerHTML = '';
 			const date = new Date(comic.modified);
 			return (resultsSection.innerHTML += `
 					<article class="picked-comic" data-id=${comic.id}>
 							<div class="img-container">
-								<img src="${noAvailableImg(comic)}" alt="imagen de ${comic.title}"/>
+								<img src="${noAvailableImg(comic)}" alt="image of ${comic.title}"/>
 							</div>
 
 							<div>
@@ -87,16 +88,29 @@ const htmlCards = (collection = 'comics', id) => {
 									
 							`);
 		});
-		fetchCharacters();
+		// fetchCharacters((collection = 'comics'), comicId, characters);
 	});
 };
 
-const fetchCharacters = (collection = 'comics', comicId, characters) => {
-	fetch(`${baseURL}${collection}/${comicId}/${characters}?apikey=${apiKey}`)
-		.then((res) => res.json())
-		.then((json) => {
-			console.log(json.data.results);
+const fetchCharacters = (collection = 'comics', comicId) => {
+	fetch(`${baseURL}${collection}/${comicId}/characters?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
+		const foundCharacters = json.data.results;
+		console.log(foundCharacters);
+
+		foundCharacters.map((character) => {
+			console.log(character.id, noAvailableImg(character), character.name);
+			resultsSection.innerHTML += `
+			<article class="comic" data-id=${character.id}>
+				<div class="img-container">
+					<img src=${noAvailableImg(character)} alt="image of ${character.name}"/>
+				</div>
+				<div>
+					<h2>${character.name}</h2>
+				</div>
+			</article>
+			`;
 		});
+	});
 };
 
 const updateResultsQuantity = (collection) => {
