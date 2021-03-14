@@ -36,7 +36,7 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
 				const shownComics = document.querySelector('.title > p');
 				shownComics.innerHTML = '';
 				let comicsQuantity = data.data.total;
-				shownComics.textContent = `Mostrando ${comicsQuantity} resultados`;
+				shownComics.textContent = `Showing ${comicsQuantity} results`;
 
 				const comicsHTML = document.querySelectorAll('.comic');
 				comicsHTML.forEach((comic) => {
@@ -72,16 +72,16 @@ const htmlCards = (collection = 'comics', id) => {
 
 							<div>
 								<h2>${comic.title}</h2>
-								<p>Publicado:</p>
-								<p> ${date.toLocaleDateString() === 'Invalid Date' ? 'No disponible' : date.toLocaleDateString()}</p>
-								<p>Guionistas:</p>
+								<p>Published on:</p>
+								<p> ${date.toLocaleDateString() === 'Invalid Date' ? 'Not available' : date.toLocaleDateString()}</p>
+								<p>Script writers:</p>
 								<p> ${comic.creators.available === 0
-									? 'No disponible'
+									? 'Not available'
 									: comic.creators.items.map((creator) => {
 											return creator.name;
 										})} </p>
-								<p>Descripcion: </p>
-								<p> ${comic.description || 'No están estos resultados 😁'} </p>
+								<p>Description: </p>
+								<p> ${comic.description || 'No description round here 😁'} </p>
 							</div>
 							</article>
 									
