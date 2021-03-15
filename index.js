@@ -15,7 +15,8 @@ const shownComics = document.querySelector('.title > p');
 const loader = document.querySelector('.overlay');
 const cardsPerPage = 20;
 let currentPage = 0;
-// let hasBeenExecuted = false;
+
+// -------------------------- Fetching comics and accessing them -----------------
 
 const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
 	loader.classList.remove('hidden');
@@ -48,13 +49,14 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
 					};
 				});
 				// updatePagination(collection);
-				// console.log(data.data.offset);
 			});
 			loader.classList.add('hidden');
 		});
 };
 
 fetchComics(`${baseURL + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + currentPage * cardsPerPage}`);
+
+// -------------------------------- Generating cards -----------------------------
 
 const htmlCards = (collection = 'comics', id) => {
 	loader.classList.remove('hidden');
@@ -93,10 +95,12 @@ const htmlCards = (collection = 'comics', id) => {
 	});
 };
 
+// ----------------------- Fetching characters and accessing each of them --------------------------
+
 const fetchCharacters = (collection = 'comics', comicId) => {
 	fetch(`${baseURL}${collection}/${comicId}/characters?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundCharacters = json.data.results;
-
+		// this following condition does not work but the mapping does
 		foundCharacters === []
 			? (resultsSection.innerHTML += `<p>No characters found 😕</p>`)
 			: foundCharacters.map((character) => {
@@ -142,6 +146,8 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 	});
 };
 
+// ------------------------ Fetching comics where characters participated on -------------------
+
 const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 	fetch(`${baseURL}${collection}/${characterId}/comics?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundComics = json.data.results;
@@ -158,6 +164,7 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 					</div>
 				</article> 
 				`;
+			// -------------------- accessing each comic according to character's ID ---------------------
 
 			const pickedComic = document.querySelectorAll('.comic');
 			pickedComic.forEach((comic) => {
@@ -172,6 +179,8 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 	});
 };
 
+// --------------------------------- Updating results quantity ---------------------------
+
 const updateResultsQuantity = (collection) => {
 	// fetch(`${baseURL + collection + '?apikey=' + apiKey}`).then((res) => res.json()).then((data) => {
 	// 	const shownComics = document.querySelector('.title > p');
@@ -182,6 +191,8 @@ const updateResultsQuantity = (collection) => {
 	// 		: (shownComics.textContent = 'No están estos resultados 😪');
 	// });
 };
+
+// --------------------------- Updating pagination --------------------------------
 
 const updatePagination = (collection = 'comics') => {
 	// let offset = currentPage * cardsPerPage;
@@ -227,6 +238,8 @@ const updatePagination = (collection = 'comics') => {
 	};
 };
 
+// ------------------------------ Search, type and order filters -------------------------
+
 searchInput.value = '';
 searchInput.oninput = () => {
 	console.log(searchInput.value);
@@ -261,11 +274,15 @@ searchButton.onclick = (e) => {
 	// search();
 };
 
+// -------------------------- When fetched card has no img to show -----------------
+
 const noAvailableImg = (data) => {
 	return data.thumbnail.path.includes('not_available')
 		? `./assets/noPhotoAvailable.jpg`
 		: `${data.thumbnail.path}.${data.thumbnail.extension}`;
 };
+
+// ------------------------ Creating a "Go Back" button just once ----------------------
 
 let executed = false;
 const createReturnButton = () => {
@@ -280,6 +297,8 @@ const createReturnButton = () => {
 		};
 	}
 };
+
+// --------------------- "Go Back" button function ------------------------
 
 const returN = (collection, id) => {
 	console.log(`showing ${collection}`);
