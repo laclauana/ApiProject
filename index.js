@@ -12,7 +12,7 @@ const lastPage = document.querySelector('#last-page');
 const resultsSection = document.querySelector('.results');
 const aside = document.querySelector('aside');
 const shownComics = document.querySelector('.title > p');
-const loader = document.querySelector('.loader');
+const loader = document.querySelector('.overlay');
 const cardsPerPage = 20;
 let currentPage = 0;
 // let hasBeenExecuted = false;
@@ -57,7 +57,6 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
 fetchComics(`${baseURL + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + currentPage * cardsPerPage}`);
 
 const htmlCards = (collection = 'comics', id) => {
-	aside.innerHTML = '';
 	loader.classList.remove('hidden');
 	fetch(`${baseURL}${collection}/${id}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const pickedComic = json.data.results;
@@ -65,7 +64,7 @@ const htmlCards = (collection = 'comics', id) => {
 		pickedComic.map((comic) => {
 			fetchCharacters('comics', comic.id);
 			resultsSection.innerHTML = '';
-
+			aside.innerHTML = '';
 			const date = new Date(comic.modified);
 			return (resultsSection.innerHTML += `
 					<article class="picked-comic" data-id=${comic.id}>

@@ -89,12 +89,14 @@ body {
 }
 
 .loader {
+	top: 300px;
 	position: relative;
 	width: 80px;
 	height: 80px;
 	left: 600px;
 	@media (max-width: 900px) {
-		left: 300px;
+		top: 400px;
+		left: 400px;
 	}
 	@media (max-width: 600px) {
 		left: 200px;
@@ -102,17 +104,27 @@ body {
 }
 
 .loader div {
-	left: 600px;
 	position: absolute;
 	border: 4px solid #fff;
-	opacity: 1;
 	border-radius: 50%;
 	animation: loader 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
 
 .loader div:nth-child(2) {
-	left: 600px;
 	animation-delay: -0.5s;
+}
+
+.overlay {
+	touch-action: none;
+	overflow-x: hidden;
+	width: 100%;
+	height: 300vh;
+	background-color: rgba(218, 207, 207, 0.397);
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 3;
 }
 
 .hidden {
