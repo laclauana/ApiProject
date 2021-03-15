@@ -11,11 +11,11 @@ const previousPage = document.querySelector('#previous-page');
 const lastPage = document.querySelector('#last-page');
 const resultsSection = document.querySelector('.results');
 const cardsTitle = document.querySelector('.results > h2');
-// const secondarySection = document.querySelector('.inner-HTML');
 const shownComics = document.querySelector('.title > p');
 const loader = document.querySelector('.loader');
 const cardsPerPage = 20;
 let currentPage = 0;
+// let hasBeenExecuted = false;
 
 const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
 	loader.classList.remove('hidden');
@@ -88,6 +88,8 @@ const htmlCards = (collection = 'comics', id) => {
 							`);
 		});
 		loader.classList.add('hidden');
+		createReturnButton();
+		// returN(collection, id);
 	});
 };
 
@@ -119,6 +121,7 @@ const fetchCharacters = (collection = 'comics', comicId) => {
 					});
 				});
 		loader.classList.add('hidden');
+		// returN('comics');
 	});
 };
 
@@ -136,6 +139,7 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 							</div>						
 						</article>
 		`;
+		// returN('characters');
 	});
 };
 
@@ -160,10 +164,12 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 				comic.onclick = () => {
 					// console.log(comic, comic.dataset.id);
 					htmlCards('comics', comic.dataset.id);
+					!createReturnButton;
 				};
 			});
 		});
 		loader.classList.add('hidden');
+		// returN('characters', id);
 	});
 };
 
@@ -260,4 +266,38 @@ const noAvailableImg = (data) => {
 	return data.thumbnail.path.includes('not_available')
 		? `./assets/noPhotoAvailable.jpg`
 		: `${data.thumbnail.path}.${data.thumbnail.extension}`;
+};
+
+var something = function() {
+	var executed = false;
+	return function() {
+		if (!executed) {
+			executed = true;
+			// do something
+		}
+	};
+};
+
+let executed = false;
+const createReturnButton = () => {
+	if (!executed) {
+		executed = true;
+		const buttonsContainer = document.querySelector('.center-button');
+		const returnButton = document.createElement('button');
+		buttonsContainer.appendChild(returnButton);
+		returnButton.textContent = 'GO BACK';
+		returnButton.onclick = () => {
+			returN('comics');
+		};
+	}
+};
+
+const returN = (collection, id) => {
+	console.log(`showing ${collection}`);
+	// if (currentPage === 0 && collection === 'comics') {
+	// 	returnButton.disabled = true;
+	// 	console.log('no hay a donde retroceder');
+	// } else {
+	// }
+	// resultsSection.innerHTML = '';
 };
