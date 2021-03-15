@@ -10,7 +10,7 @@ const nextPage = document.querySelector('#next-page');
 const previousPage = document.querySelector('#previous-page');
 const lastPage = document.querySelector('#last-page');
 const resultsSection = document.querySelector('.results');
-const cardsTitle = document.querySelector('.results > h2');
+const aside = document.querySelector('aside');
 const shownComics = document.querySelector('.title > p');
 const loader = document.querySelector('.loader');
 const cardsPerPage = 20;
@@ -58,6 +58,7 @@ fetchComics(`${baseURL + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + 
 
 const htmlCards = (collection = 'comics', id) => {
 	resultsSection.innerHTML = '';
+	aside.innerHTML = '';
 	loader.classList.remove('hidden');
 	fetch(`${baseURL}${collection}/${id}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const pickedComic = json.data.results;
@@ -100,16 +101,14 @@ const fetchCharacters = (collection = 'comics', comicId) => {
 		foundCharacters === []
 			? (resultsSection.innerHTML += `<p>No characters found 😕</p>`)
 			: foundCharacters.map((character) => {
-					resultsSection.innerHTML += `
-
-						<article class="character" data-id=${character.id}>
-							<div class="img-container">
-								<img src=${noAvailableImg(character)} alt="image of ${character.name}"/>
-								<h2>${character.name}</h2>
-							</div>						
-						</article>
-
-					`;
+					aside.innerHTML += `
+				<article class="character" data-id=${character.id}>
+					<div class="img-container">
+						<img src=${noAvailableImg(character)} alt="image of ${character.name}"/>
+						<h2>${character.name}</h2>
+					</div>						
+				</article>		
+				`;
 					const pickedCharacter = document.querySelectorAll('.character');
 					pickedCharacter.forEach((character) => {
 						character.onclick = () => {
@@ -129,6 +128,7 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 	loader.classList.remove('hidden');
 	fetch(`${baseURL}${collection}/${characterID}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const character = json.data.results[0];
+		aside.innerHTML = '';
 		resultsSection.innerHTML += `
 						<article class="picked-comic" data-id=${character.id}>
 							<div class="img-container">
@@ -147,8 +147,9 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 	fetch(`${baseURL}${collection}/${characterId}/comics?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundComics = json.data.results;
 		// console.log(foundComics);
+		aside.innerHTML = '';
 		foundComics.map((comic) => {
-			resultsSection.innerHTML += `
+			aside.innerHTML += `
 				<article class="comic" data-id=${comic.id}>
 					<div class="img-container">
 						<img src=${noAvailableImg(comic)} alt="${comic.title}">
@@ -164,7 +165,6 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 				comic.onclick = () => {
 					// console.log(comic, comic.dataset.id);
 					htmlCards('comics', comic.dataset.id);
-					!createReturnButton;
 				};
 			});
 		});

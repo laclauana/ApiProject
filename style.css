@@ -271,6 +271,54 @@ section:not(section:first-child) .comic .img-container img {
   }
 }
 
+aside {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+aside .comic {
+  width: 15.5%;
+  align-items: center;
+  background-color: #1f691f;
+  border-radius: 10px;
+  margin: 10px;
+  height: 460px;
+}
+aside .comic:hover {
+  cursor: pointer;
+}
+aside .comic:hover .img-container {
+  transform: skew(1deg) scale(1.02);
+  transition: 0.09s;
+}
+aside .comic:hover p {
+  transition: 0.2s;
+  color: red;
+  text-shadow: blanchedalmond 1px 1px;
+  font-weight: bolder;
+}
+aside .comic .img-container {
+  width: 100%;
+  overflow: hidden;
+}
+aside .comic .img-container img {
+  width: 100%;
+}
+@media (max-width: 900px) {
+  aside .comic {
+    height: 300px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 600px) {
+  aside .comic {
+    min-width: 25%;
+    height: 300px;
+    font-size: 10px;
+  }
+}
+
 .picked-comic {
   display: flex;
 }

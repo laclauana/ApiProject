@@ -94,6 +94,7 @@ body {
 	height: 80px;
 	left: 600px;
 }
+
 .loader div {
 	left: 600px;
 	position: absolute;
@@ -102,6 +103,7 @@ body {
 	border-radius: 50%;
 	animation: loader 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
+
 .loader div:nth-child(2) {
 	left: 600px;
 	animation-delay: -0.5s;
@@ -232,6 +234,50 @@ section:not(section:first-child) {
 	@media (min-width: 600px) and (max-width: 900px) {
 		justify-content: space-evenly;
 	}
+	.comic {
+		width: 15.5%;
+		align-items: center;
+		@include card-design($background-colour, 10px);
+		height: 460px;
+		&:hover {
+			cursor: pointer;
+			.img-container {
+				transform: skew(1deg) scale(1.02);
+				transition: 0.09s;
+			}
+			p {
+				transition: 0.2s;
+				color: $contrast-colour;
+				text-shadow: $shadow;
+				font-weight: bolder;
+			}
+		}
+
+		.img-container {
+			width: 100%;
+			overflow: hidden;
+			img {
+				width: 100%;
+			}
+		}
+		@media (max-width: 900px) {
+			height: 300px;
+			font-size: 13px;
+		}
+		@media (max-width: 600px) {
+			min-width: 25%;
+			height: 300px;
+			font-size: 10px;
+		}
+	}
+}
+
+aside {
+	margin: 20px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+
 	.comic {
 		width: 15.5%;
 		align-items: center;
