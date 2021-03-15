@@ -69,6 +69,16 @@ body {
   height: 80px;
   left: 600px;
 }
+@media (max-width: 900px) {
+  .loader {
+    left: 300px;
+  }
+}
+@media (max-width: 600px) {
+  .loader {
+    left: 200px;
+  }
+}
 
 .loader div {
   left: 600px;
@@ -229,47 +239,6 @@ section:not(section:first-child) {
     justify-content: space-evenly;
   }
 }
-section:not(section:first-child) .comic {
-  width: 15.5%;
-  align-items: center;
-  background-color: #1f691f;
-  border-radius: 10px;
-  margin: 10px;
-  height: 460px;
-}
-section:not(section:first-child) .comic:hover {
-  cursor: pointer;
-}
-section:not(section:first-child) .comic:hover .img-container {
-  transform: skew(1deg) scale(1.02);
-  transition: 0.09s;
-}
-section:not(section:first-child) .comic:hover p {
-  transition: 0.2s;
-  color: red;
-  text-shadow: blanchedalmond 1px 1px;
-  font-weight: bolder;
-}
-section:not(section:first-child) .comic .img-container {
-  width: 100%;
-  overflow: hidden;
-}
-section:not(section:first-child) .comic .img-container img {
-  width: 100%;
-}
-@media (max-width: 900px) {
-  section:not(section:first-child) .comic {
-    height: 300px;
-    font-size: 13px;
-  }
-}
-@media (max-width: 600px) {
-  section:not(section:first-child) .comic {
-    min-width: 25%;
-    height: 300px;
-    font-size: 10px;
-  }
-}
 
 aside {
   margin: 20px;
@@ -277,7 +246,8 @@ aside {
   justify-content: center;
   flex-wrap: wrap;
 }
-aside .comic {
+
+.comic {
   width: 15.5%;
   align-items: center;
   background-color: #1f691f;
@@ -285,34 +255,35 @@ aside .comic {
   margin: 10px;
   height: 460px;
 }
-aside .comic:hover {
+.comic:hover {
   cursor: pointer;
 }
-aside .comic:hover .img-container {
+.comic:hover .img-container {
   transform: skew(1deg) scale(1.02);
   transition: 0.09s;
 }
-aside .comic:hover p {
+.comic:hover p {
   transition: 0.2s;
   color: red;
   text-shadow: blanchedalmond 1px 1px;
   font-weight: bolder;
 }
-aside .comic .img-container {
+.comic .img-container {
   width: 100%;
   overflow: hidden;
 }
-aside .comic .img-container img {
+.comic .img-container img {
   width: 100%;
+  min-height: 200px;
 }
 @media (max-width: 900px) {
-  aside .comic {
+  .comic {
     height: 300px;
     font-size: 13px;
   }
 }
 @media (max-width: 600px) {
-  aside .comic {
+  .comic {
     min-width: 25%;
     height: 300px;
     font-size: 10px;
@@ -328,8 +299,23 @@ aside .comic .img-container img {
 .picked-comic div p:nth-child(odd) {
   font-family: "Hachi Maru Pop";
 }
+@media (max-width: 900px) {
+  .picked-comic .img-container {
+    align-self: center;
+  }
+}
 .picked-comic .img-container img {
   width: 300px;
+}
+@media (max-width: 900px) {
+  .picked-comic {
+    flex-direction: column;
+  }
+}
+@media (max-width: 600px) {
+  .picked-comic {
+    flex-direction: column;
+  }
 }
 
 .character {

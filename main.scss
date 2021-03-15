@@ -93,6 +93,12 @@ body {
 	width: 80px;
 	height: 80px;
 	left: 600px;
+	@media (max-width: 900px) {
+		left: 300px;
+	}
+	@media (max-width: 600px) {
+		left: 200px;
+	}
 }
 
 .loader div {
@@ -234,42 +240,6 @@ section:not(section:first-child) {
 	@media (min-width: 600px) and (max-width: 900px) {
 		justify-content: space-evenly;
 	}
-	.comic {
-		width: 15.5%;
-		align-items: center;
-		@include card-design($background-colour, 10px);
-		height: 460px;
-		&:hover {
-			cursor: pointer;
-			.img-container {
-				transform: skew(1deg) scale(1.02);
-				transition: 0.09s;
-			}
-			p {
-				transition: 0.2s;
-				color: $contrast-colour;
-				text-shadow: $shadow;
-				font-weight: bolder;
-			}
-		}
-
-		.img-container {
-			width: 100%;
-			overflow: hidden;
-			img {
-				width: 100%;
-			}
-		}
-		@media (max-width: 900px) {
-			height: 300px;
-			font-size: 13px;
-		}
-		@media (max-width: 600px) {
-			min-width: 25%;
-			height: 300px;
-			font-size: 10px;
-		}
-	}
 }
 
 aside {
@@ -277,42 +247,44 @@ aside {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+}
 
-	.comic {
-		width: 15.5%;
-		align-items: center;
-		@include card-design($background-colour, 10px);
-		height: 460px;
-		&:hover {
-			cursor: pointer;
-			.img-container {
-				transform: skew(1deg) scale(1.02);
-				transition: 0.09s;
-			}
-			p {
-				transition: 0.2s;
-				color: $contrast-colour;
-				text-shadow: $shadow;
-				font-weight: bolder;
-			}
-		}
+.comic {
+	width: 15.5%;
 
+	align-items: center;
+	@include card-design($background-colour, 10px);
+	height: 460px;
+	&:hover {
+		cursor: pointer;
 		.img-container {
+			transform: skew(1deg) scale(1.02);
+			transition: 0.09s;
+		}
+		p {
+			transition: 0.2s;
+			color: $contrast-colour;
+			text-shadow: $shadow;
+			font-weight: bolder;
+		}
+	}
+
+	.img-container {
+		width: 100%;
+		overflow: hidden;
+		img {
 			width: 100%;
-			overflow: hidden;
-			img {
-				width: 100%;
-			}
+			min-height: 200px;
 		}
-		@media (max-width: 900px) {
-			height: 300px;
-			font-size: 13px;
-		}
-		@media (max-width: 600px) {
-			min-width: 25%;
-			height: 300px;
-			font-size: 10px;
-		}
+	}
+	@media (max-width: 900px) {
+		height: 300px;
+		font-size: 13px;
+	}
+	@media (max-width: 600px) {
+		min-width: 25%;
+		height: 300px;
+		font-size: 10px;
 	}
 }
 
@@ -325,9 +297,18 @@ aside {
 		}
 	}
 	.img-container {
+		@media (max-width: 900px) {
+			align-self: center;
+		}
 		img {
 			width: 300px;
 		}
+	}
+	@media (max-width: 900px) {
+		flex-direction: column;
+	}
+	@media (max-width: 600px) {
+		flex-direction: column;
 	}
 }
 
