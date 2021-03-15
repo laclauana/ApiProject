@@ -267,16 +267,6 @@ const noAvailableImg = (data) => {
 		: `${data.thumbnail.path}.${data.thumbnail.extension}`;
 };
 
-var something = function() {
-	var executed = false;
-	return function() {
-		if (!executed) {
-			executed = true;
-			// do something
-		}
-	};
-};
-
 let executed = false;
 const createReturnButton = () => {
 	if (!executed) {
