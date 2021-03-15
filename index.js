@@ -65,7 +65,7 @@ const htmlCards = (collection = 'comics', id) => {
 		// console.log(pickedComic);
 		pickedComic.map((comic) => {
 			fetchCharacters('comics', comic.id);
-			resultsSection.innerHTML = '';
+
 			const date = new Date(comic.modified);
 			return (resultsSection.innerHTML += `
 					<article class="picked-comic" data-id=${comic.id}>
