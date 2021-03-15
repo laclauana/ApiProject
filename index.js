@@ -57,7 +57,6 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
 fetchComics(`${baseURL + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + currentPage * cardsPerPage}`);
 
 const htmlCards = (collection = 'comics', id) => {
-	resultsSection.innerHTML = '';
 	aside.innerHTML = '';
 	loader.classList.remove('hidden');
 	fetch(`${baseURL}${collection}/${id}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
@@ -65,6 +64,7 @@ const htmlCards = (collection = 'comics', id) => {
 		// console.log(pickedComic);
 		pickedComic.map((comic) => {
 			fetchCharacters('comics', comic.id);
+			resultsSection.innerHTML = '';
 
 			const date = new Date(comic.modified);
 			return (resultsSection.innerHTML += `
