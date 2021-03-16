@@ -355,11 +355,22 @@ aside {
   width: 180px;
   min-height: 350px;
 }
+@media (max-width: 600px) {
+  .character .img-container {
+    width: 150px;
+  }
+}
 .character .img-container img {
   background-color: red;
   padding-bottom: 5px;
   width: 180px;
   height: 250px;
+}
+@media (max-width: 600px) {
+  .character .img-container img {
+    width: 150px;
+    height: 200px;
+  }
 }
 .character div:last-child {
   background-color: #353232;

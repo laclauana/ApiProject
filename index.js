@@ -152,7 +152,7 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 	fetch(`${baseURL}${collection}/${characterId}/comics?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundComics = json.data.results;
 		// console.log(foundComics);
-		aside.innerHTML = '';
+		// aside.innerHTML = '';
 		foundComics.map((comic) => {
 			aside.innerHTML += `
 				<article class="comic" data-id=${comic.id}>

@@ -341,11 +341,19 @@ aside {
 	.img-container {
 		width: 180px;
 		min-height: 350px;
+		@media (max-width: 600px) {
+			width: 150px;
+			// height: 50px;
+		}
 		img {
 			background-color: red;
 			padding-bottom: 5px;
 			width: 180px;
 			height: 250px;
+			@media (max-width: 600px) {
+				width: 150px;
+				height: 200px;
+			}
 		}
 	}
 	div:last-child {
