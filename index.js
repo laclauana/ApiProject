@@ -123,7 +123,8 @@ const fetchCharacters = (collection = 'comics', comicId) => {
 					});
 				});
 		loader.classList.add('hidden');
-		// returN('comics');
+		createReturnButton();
+		// returN('comics', comicId);
 	});
 };
 
@@ -142,7 +143,6 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 							</div>						
 						</article>
 		`;
-		// returN('characters');
 	});
 };
 
@@ -175,7 +175,6 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 			});
 		});
 		loader.classList.add('hidden');
-		// returN('characters', id);
 	});
 };
 
@@ -195,47 +194,44 @@ const updateResultsQuantity = (collection) => {
 // --------------------------- Updating pagination --------------------------------
 
 const updatePagination = (collection = 'comics') => {
-	// let offset = currentPage * cardsPerPage;
+	fetch(`${baseURL}${collection}?apikey=${apiKey}&orderBy=title&offset=${currentPage * cardsPerPage}`)
+		.then((res) => res.json())
+		.then((data) => {
+			const comicsQuantity = data.data.total;
+			console.log(comicsQuantity);
+		});
 
-	// offset == 0
-	// 	? ((previousPage.disabled = true), (firstPage.disabled = true))
-	// 	: ((previousPage.disabled = false), (firstPage.disabled = false));
+	// 	nextPage.onclick = () => {
+	// 	currentPage++;
+	// 	console.log(currentPage);
 
-	// offset + cardsPerPage >= comicsQuantity
-	// 	? ((nextPage.disabled = true), (lastPage.disabled = true))
-	// 	: ((nextPage.disabled = false), (lastPage.disabled = false));
+	// 	lastPage.onclick = () => {
+	// 		const remainder = data.data.total % cardsPerPage;
+	// 		if (remainder > 0) {
+	// 			currentPage = (data.data.total - remainder) / cardsPerPage;
+	// 		} else {
+	// 			currentPage = (data.data.total - remainder) / cardsPerPage - cardsPerPage;
+	// 		}
+	// 		nextPage.disabled = true;
+	// 		lastPage.disabled = true;
+	// 		console.log(currentPage);
+	// 	};
 
-	nextPage.onclick = () => {
-		currentPage++;
-		console.log(currentPage);
-	};
+	// 	previousPage.onclick = () => {
+	// 		currentPage--;
+	// 		console.log(currentPage);
+	// 		resultsSection.innerHTML = '';
+	// 		fetchComics(
+	// 			`${baseURL + collection + '?apikey=' + apiKey + '&orderBy=title&offset=' + currentPage * cardsPerPage}`
+	// 		);
+	// 	};
 
-	lastPage.onclick = () => {
-		const remainder = data.data.total % cardsPerPage;
-		if (remainder > 0) {
-			currentPage = (data.data.total - remainder) / cardsPerPage;
-		} else {
-			currentPage = (data.data.total - remainder) / cardsPerPage - cardsPerPage;
-		}
-		nextPage.disabled = true;
-		lastPage.disabled = true;
-		console.log(currentPage);
-	};
-
-	previousPage.onclick = () => {
-		currentPage--;
-		console.log(currentPage);
-		resultsSection.innerHTML = '';
-		fetchComics(
-			`${baseURL + collection + '?apikey=' + apiKey + '&orderBy=title&offset=' + currentPage * cardsPerPage}`
-		);
-	};
-
-	firstPage.onclick = () => {
-		currentPage = 0;
-		firstPage.disabled = true;
-		previousPage.disabled = true;
-	};
+	// 	firstPage.onclick = () => {
+	// 		currentPage = 0;
+	// 		firstPage.disabled = true;
+	// 		previousPage.disabled = true;
+	// 	};
+	// };
 };
 
 // ------------------------------ Search, type and order filters -------------------------
@@ -288,24 +284,22 @@ let executed = false;
 const createReturnButton = () => {
 	if (!executed) {
 		executed = true;
-		const buttonsContainer = document.querySelector('.center-button');
 		const returnButton = document.createElement('button');
+		const buttonsContainer = document.querySelector('.center-button');
 		buttonsContainer.appendChild(returnButton);
 		returnButton.textContent = 'GO BACK';
 		returnButton.onclick = () => {
-			returN('comics');
+			// returN((collection = 'comics'));
 		};
 	}
 };
 
 // --------------------- "Go Back" button function ------------------------
 
-const returN = (collection, id) => {
-	console.log(`showing ${collection}`);
-	// if (currentPage === 0 && collection === 'comics') {
-	// 	returnButton.disabled = true;
-	// 	console.log('no hay a donde retroceder');
-	// } else {
-	// }
-	// resultsSection.innerHTML = '';
-};
+// const returN = (collection, id) => {
+// 	if (collection === 'comics') {
+// 		htmlCards('comics', id);
+// 	} else if (collection === 'characters') {
+// 		fetchCharacters('characters', id);
+// 	}
+// };

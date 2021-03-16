@@ -246,6 +246,11 @@ input:focus {
 section:not(section:first-child) {
   flex-wrap: wrap;
 }
+@media (min-width: 900px) {
+  section:not(section:first-child) {
+    margin: 25px;
+  }
+}
 @media (min-width: 600px) and (max-width: 900px) {
   section:not(section:first-child) {
     justify-content: space-evenly;
@@ -287,6 +292,16 @@ aside {
 .comic .img-container img {
   width: 100%;
   min-height: 200px;
+}
+@media (min-width: 1600px) {
+  .comic {
+    height: 630px;
+  }
+}
+@media (min-width: 900px) and (max-width: 1600px) {
+  .comic {
+    height: 450px;
+  }
 }
 @media (max-width: 900px) {
   .comic {

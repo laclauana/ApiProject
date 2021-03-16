@@ -249,6 +249,9 @@ input:focus {
 section:not(section:first-child) {
 	@extend %center-info;
 	flex-wrap: wrap;
+	@media (min-width: 900px) {
+		margin: 25px;
+	}
 	@media (min-width: 600px) and (max-width: 900px) {
 		justify-content: space-evenly;
 	}
@@ -288,6 +291,12 @@ aside {
 			width: 100%;
 			min-height: 200px;
 		}
+	}
+	@media (min-width: 1600px) {
+		height: 630px;
+	}
+	@media (min-width: 900px) and (max-width: 1600px) {
+		height: 450px;
 	}
 	@media (max-width: 900px) {
 		height: 300px;
