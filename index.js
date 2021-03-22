@@ -112,19 +112,23 @@ const fetchCharacters = (collection = 'comics', comicId) => {
 					</div>						
 				</article>		
 				`;
-					const pickedCharacter = document.querySelectorAll('.character');
-					pickedCharacter.forEach((character) => {
-						character.onclick = () => {
-							resultsSection.innerHTML = '';
-
-							fetchCharacterID('characters', character.dataset.id);
-							fetchComicsFromCharacters('characters', character.dataset.id);
-						};
-					});
+					accessCharacter();
 				});
 		loader.classList.add('hidden');
 		createReturnButton();
 		// returN('comics', comicId);
+	});
+};
+
+const accessCharacter = () => {
+	const pickedCharacter = document.querySelectorAll('.character');
+	pickedCharacter.forEach((character) => {
+		character.onclick = () => {
+			resultsSection.innerHTML = '';
+
+			fetchCharacterID('characters', character.dataset.id);
+			fetchComicsFromCharacters('characters', character.dataset.id);
+		};
 	});
 };
 
@@ -267,31 +271,13 @@ const search = () => {
 		}
 	} else if (typeOption === 'characters') {
 		if (orderOption === 'A-Z') {
-			fetch(`${baseURL}characters?apikey=${apiKey}&orderBy=name`).then((res) => res.json()).then((data) => {
-				const characters = data.data.results;
-				// console.log(characters);
-				resultsSection.innerHTML = '';
-				characters.map((character) => {
-					resultsSection.innerHTML += `
-					
-					<article class="character" data-id=${character.id}>
-						<div class="img-container">
-							<img src=${noAvailableImg(character)} alt="image of ${character.name}"/>
-							<h2>${character.name}</h2>
-						</div>						
-					</article>		
-					`;
-				});
-			});
-
-			// 	fetchComics(currentPage, cardsPerPage, 'characters', 'name');
-			// } else if (orderOption === 'Z-A') {
-			// 	fetchComics(currentPage, cardsPerPage, 'characters', '-name');
-			// } else if (orderOption === 'most-updated-ones') {
-			// 	fetchComics(currentPage, cardsPerPage, 'characters', 'modified');
-			// } else if (orderOption === 'most-old-ones') {
-			// 	fetchComics(currentPage, cardsPerPage, 'characters', '-modified');
-			// }
+			sortCharactersBy('name');
+		} else if (orderOption === 'Z-A') {
+			sortCharactersBy('-name');
+		} else if (orderOption === 'most-updated-ones') {
+			sortCharactersBy('modified');
+		} else if (orderOption === 'most-old-ones') {
+			sortCharactersBy('-modified');
 		}
 		// updateResultsQuantity(collection);
 	}
@@ -300,6 +286,25 @@ const search = () => {
 searchButton.onclick = (e) => {
 	e.preventDefault();
 	search();
+};
+
+const sortCharactersBy = (order) => {
+	fetch(`${baseURL}characters?apikey=${apiKey}&orderBy=${order}`).then((res) => res.json()).then((data) => {
+		const characters = data.data.results;
+		// console.log(characters);
+		resultsSection.innerHTML = '';
+		characters.map((character) => {
+			resultsSection.innerHTML += `
+			<article class="character" data-id=${character.id}>
+				<div class="img-container">
+					<img src=${noAvailableImg(character)} alt="image of ${character.name}"/>
+					<h2>${character.name}</h2>
+				</div>						
+			</article>		
+			`;
+			accessCharacter();
+		});
+	});
 };
 
 // -------------------------- When fetched card has no img to show -----------------
