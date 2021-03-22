@@ -94,6 +94,7 @@ body {
 	width: 80px;
 	height: 80px;
 	left: 600px;
+
 	@media (max-width: 900px) {
 		top: 400px;
 		left: 400px;
@@ -343,7 +344,6 @@ aside {
 		min-height: 350px;
 		@media (max-width: 600px) {
 			width: 150px;
-			// height: 50px;
 		}
 		img {
 			background-color: red;

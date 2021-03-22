@@ -18,9 +18,9 @@ let currentPage = 0;
 
 // -------------------------- Fetching comics and accessing them -----------------
 
-const fetchComics = (currentPage, cardsPerPage, collection = 'comics') => {
+const fetchComics = (currentPage, cardsPerPage, collection = 'comics', order = 'title') => {
 	loader.classList.remove('hidden');
-	fetch(`${baseURL}${collection}?apikey=${apiKey}&orderBy=title&offset=${currentPage * cardsPerPage}`)
+	fetch(`${baseURL}${collection}?apikey=${apiKey}&orderBy=${order}&offset=${currentPage * cardsPerPage}`)
 		.then((res) => res.json())
 		.then((data) => {
 			const comics = data.data.results;
@@ -242,32 +242,64 @@ searchInput.oninput = () => {
 	// search();
 };
 
-typeSelect.onchange = () => {
-	const typeOption = typeSelect.options[typeSelect.selectedIndex].value;
-	console.log(typeOption);
-	// search();
+typeSelect.onsubmit = () => {
+	search();
 };
 
-orderSelect.onchange = () => {
+orderSelect.onsubmit = () => {
+	search();
+};
+
+const search = () => {
 	const orderOption = orderSelect.options[orderSelect.selectedIndex].value;
-	console.log(orderOption);
-	// search();
-};
+	// 	console.log(orderOption);
+	const typeOption = typeSelect.options[typeSelect.selectedIndex].value;
+	// console.log(typeOption);
+	if (typeOption === 'comics') {
+		if (orderOption === 'A-Z') {
+			fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+		} else if (orderOption === 'Z-A') {
+			fetchComics(currentPage, cardsPerPage, 'comics', '-title');
+		} else if (orderOption === 'most-updated-ones') {
+			fetchComics(currentPage, cardsPerPage, 'comics', '-onsaleDate');
+		} else if (orderOption === 'most-old-ones') {
+			fetchComics(currentPage, cardsPerPage, 'comics', 'onsaleDate');
+		}
+	} else if (typeOption === 'characters') {
+		if (orderOption === 'A-Z') {
+			fetch(`${baseURL}characters?apikey=${apiKey}&orderBy=name`).then((res) => res.json()).then((data) => {
+				const characters = data.data.results;
+				// console.log(characters);
+				resultsSection.innerHTML = '';
+				characters.map((character) => {
+					resultsSection.innerHTML += `
+					
+					<article class="character" data-id=${character.id}>
+						<div class="img-container">
+							<img src=${noAvailableImg(character)} alt="image of ${character.name}"/>
+							<h2>${character.name}</h2>
+						</div>						
+					</article>		
+					`;
+				});
+			});
 
-// const search = () => {
-// 	currentPage = 0;
-// 	if (typeOption === 'characters') {
-// 		fetchCharacters('characters');
-// 	}
-// 	if (typeOption === 'comics') {
-// 		fetchComics(currentPage, cardsPerPage, (collection = 'comics'));
-// 	}
-// 	updateResultsQuantity(collection);
-// };
+			// 	fetchComics(currentPage, cardsPerPage, 'characters', 'name');
+			// } else if (orderOption === 'Z-A') {
+			// 	fetchComics(currentPage, cardsPerPage, 'characters', '-name');
+			// } else if (orderOption === 'most-updated-ones') {
+			// 	fetchComics(currentPage, cardsPerPage, 'characters', 'modified');
+			// } else if (orderOption === 'most-old-ones') {
+			// 	fetchComics(currentPage, cardsPerPage, 'characters', '-modified');
+			// }
+		}
+		// updateResultsQuantity(collection);
+	}
+};
 
 searchButton.onclick = (e) => {
 	e.preventDefault();
-	// search();
+	search();
 };
 
 // -------------------------- When fetched card has no img to show -----------------
