@@ -190,8 +190,8 @@ form div {
     flex-direction: column;
   }
   form div label select {
-    margin: 0.5vh;
-    width: 7rem;
+    margin: 2vh;
+    width: 9rem;
   }
 }
 
