@@ -242,7 +242,27 @@ const updatePagination = (collection = 'comics') => {
 
 searchInput.value = '';
 searchInput.oninput = () => {
-	console.log(searchInput.value);
+	const word = searchInput.value;
+	resultsSection.innerHTML = '';
+	fetch(`${baseURL}comics?apikey=${apiKey}&titleStartsWith=${word}`).then((res) => res.json()).then((data) => {
+		const resultsFound = data.data.results;
+		// console.log(resultsFound);
+		resultsFound.map((userSearch) => {
+			// if (word.includes(userSearch.title)) {
+			// console.log(userSearch.title);
+			resultsSection.innerHTML += `
+						<article class="comic" data-id=${userSearch.id}>
+                            	<div class="img-container">
+                            		<img src=${noAvailableImg(userSearch)} alt="${userSearch.title}">
+                            	</div>
+                            	<div>                                               
+                            		<p>${userSearch.title}</p>                               
+                            	</div>
+                        </article> 	
+			`;
+			// }
+		});
+	});
 	// search();
 };
 
