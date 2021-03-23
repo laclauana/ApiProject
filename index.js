@@ -90,8 +90,8 @@ const htmlCards = (collection = 'comics', id) => {
 							`);
 		});
 		loader.classList.add('hidden');
-		createReturnButton();
-		// returN(collection, id);
+		createBackButton();
+		// goBack(collection, id);
 	});
 };
 
@@ -115,8 +115,8 @@ const fetchCharacters = (collection = 'comics', comicId) => {
 					accessCharacter();
 				});
 		loader.classList.add('hidden');
-		createReturnButton();
-		// returN('comics', comicId);
+		createBackButton();
+		// goBack('comics', comicId);
 	});
 };
 
@@ -342,25 +342,25 @@ const noAvailableImg = (data) => {
 		: `${data.thumbnail.path}.${data.thumbnail.extension}`;
 };
 
-// ------------------------ Creating a "Go Back" button just once ----------------------
+// ------------------------ Creating a "back" button just once ----------------------
 
 let executed = false;
-const createReturnButton = () => {
+const createBackButton = () => {
 	if (!executed) {
 		executed = true;
-		const returnButton = document.createElement('button');
+		const backButton = document.createElement('button');
 		const buttonsContainer = document.querySelector('.center-button');
-		buttonsContainer.appendChild(returnButton);
-		returnButton.textContent = 'GO BACK';
-		returnButton.onclick = () => {
-			returN();
+		buttonsContainer.appendChild(backButton);
+		backButton.textContent = 'BACK';
+		backButton.onclick = () => {
+			goBack();
 		};
 	}
 };
 
-// --------------------- "Go Back" button function ------------------------
+// --------------------- "back" button function ------------------------
 
-const returN = () => {
+const goBack = () => {
 	console.log('es un comienzo');
 	// if (collection === 'comics') {
 	// 	htmlCards('comics', id);
