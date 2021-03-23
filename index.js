@@ -308,6 +308,7 @@ const search = () => {
 		}
 		// updateResultsQuantity(collection);
 	}
+	goBack(typeOption);
 };
 
 searchButton.onclick = (e) => {
@@ -360,11 +361,13 @@ const createBackButton = () => {
 
 // --------------------- "back" button function ------------------------
 
-const goBack = () => {
-	console.log('es un comienzo');
+const goBack = (collection) => {
+	console.log('estas retrocediendo');
+	resultsSection.innerHTML = '';
+	aside.innerHTML = '';
+
 	// if (collection === 'comics') {
-	// 	htmlCards('comics', id);
-	// } else if (collection === 'characters') {
-	// 	fetchCharacters('characters', id);
+	fetchComics(currentPage, cardsPerPage, collection, 'title');
+	// } else {
 	// }
 };
