@@ -308,7 +308,7 @@ const search = () => {
 		}
 		// updateResultsQuantity(collection);
 	}
-	goBack(typeOption);
+	// goBack(typeOption);
 };
 
 searchButton.onclick = (e) => {
@@ -354,7 +354,7 @@ const createBackButton = () => {
 		buttonsContainer.appendChild(backButton);
 		backButton.textContent = 'BACK';
 		backButton.onclick = () => {
-			goBack();
+			// goBack();
 		};
 	}
 };
