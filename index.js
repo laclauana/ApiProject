@@ -248,7 +248,6 @@ searchInput.oninput = () => {
 		const resultsFound = data.data.results;
 		// console.log(resultsFound);
 		resultsFound.map((userSearch) => {
-			// if (word.includes(userSearch.title)) {
 			// console.log(userSearch.title);
 			resultsSection.innerHTML += `
 						<article class="comic" data-id=${userSearch.id}>
@@ -260,10 +259,18 @@ searchInput.oninput = () => {
                             	</div>
                         </article> 	
 			`;
-			// }
+
+			const comicsHTML = document.querySelectorAll('.comic');
+			comicsHTML.forEach((comic) => {
+				comic.onclick = () => {
+					// console.log('hiciste click a un comic');
+					shownComics.textContent = '';
+					htmlCards('comics', userSearch.id);
+					searchInput.value = '';
+				};
+			});
 		});
 	});
-	// search();
 };
 
 typeSelect.onsubmit = () => {
@@ -346,17 +353,18 @@ const createReturnButton = () => {
 		buttonsContainer.appendChild(returnButton);
 		returnButton.textContent = 'GO BACK';
 		returnButton.onclick = () => {
-			// returN((collection = 'comics'));
+			returN();
 		};
 	}
 };
 
 // --------------------- "Go Back" button function ------------------------
 
-// const returN = (collection, id) => {
-// 	if (collection === 'comics') {
-// 		htmlCards('comics', id);
-// 	} else if (collection === 'characters') {
-// 		fetchCharacters('characters', id);
-// 	}
-// };
+const returN = () => {
+	console.log('es un comienzo');
+	// if (collection === 'comics') {
+	// 	htmlCards('comics', id);
+	// } else if (collection === 'characters') {
+	// 	fetchCharacters('characters', id);
+	// }
+};
