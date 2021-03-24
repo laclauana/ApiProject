@@ -5,16 +5,27 @@ const searchInput = document.querySelector('#search-input');
 const typeSelect = document.querySelector('#type');
 const orderSelect = document.querySelector('#order');
 const searchButton = document.querySelector('.search');
-const firstPage = document.querySelector('#first-page');
-const nextPage = document.querySelector('#next-page');
-const previousPage = document.querySelector('#previous-page');
-const lastPage = document.querySelector('#last-page');
 const resultsSection = document.querySelector('.results');
 const aside = document.querySelector('aside');
 const shownComics = document.querySelector('.title > p');
 const loader = document.querySelector('.overlay');
+const body = document.body;
+const paginationButtons = document.createElement('div');
+paginationButtons.setAttribute('class', 'center-button');
+body.appendChild(paginationButtons);
 const cardsPerPage = 20;
 let currentPage = 0;
+paginationButtons.innerHTML = `
+
+		<button id="first-page">
+			<< </button>
+		<button id="previous-page">
+			< </button>
+		<button id="next-page">
+			> </button>
+		<button id="last-page">
+			>> </button>
+	`;
 
 // -------------------------- Fetching comics and accessing them -----------------
 
@@ -54,7 +65,55 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics', order = '
 		});
 };
 
-fetchComics(`${baseURL + 'comics?apikey=' + apiKey + '&orderBy=title&offset=' + currentPage * cardsPerPage}`);
+fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+
+const updatePagination = (collection, order, currentPage, cardsPerPage) => {
+	fetch(`${baseURL}${collection}?apikey=${apiKey}&orderBy=${order}&offset=${currentPage * cardsPerPage}`)
+		.then((res) => res.json())
+		.then((data) => {
+			const remainder = data.data.total % cardsPerPage;
+			const nextPage = document.querySelector('#next-page');
+			const previousPage = document.querySelector('#previous-page');
+			const lastPage = document.querySelector('#last-page');
+			const firstPage = document.querySelector('#first-page');
+			firstPage.onclick = () => {
+				currentPage = 0;
+				fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+			};
+			nextPage.onclick = () => {
+				currentPage++;
+				fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+			};
+			previousPage.onclick = () => {
+				currentPage--;
+				fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+			};
+			lastPage.onclick = () => {
+				if (remainder > 0) {
+					currentPage = (data.data.total - remainder) / cardsPerPage;
+				} else {
+					currentPage = (data.data.total - remainder) / cardsPerPage - cardsPerPage;
+				}
+				fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+			};
+
+			// if (currentPage <= 0) {
+			// 	firstPage.disabled = true;
+			// 	previousPage.disabled = true;
+			// } else if (currentPage > 0) {
+			// 	firstPage.disabled = false;
+			// 	previousPage.disabled = false;
+			// } else if ((currentPage = (data.data.total - remainder) / cardsPerPage)) {
+			// 	nextPage.disabled = true;
+			// 	lastPage.disabled = true;
+			// } else if ((currentPage = (data.data.total - remainder) / cardsPerPage - cardsPerPage)) {
+			// 	nextPage.disabled = false;
+			// 	lastPage.disabled = false;
+			// }
+		});
+};
+
+updatePagination('comics', 'title', currentPage, cardsPerPage);
 
 // -------------------------------- Generating cards -----------------------------
 
@@ -196,47 +255,6 @@ const updateResultsQuantity = (collection) => {
 };
 
 // --------------------------- Updating pagination --------------------------------
-
-const updatePagination = (collection = 'comics') => {
-	fetch(`${baseURL}${collection}?apikey=${apiKey}&orderBy=title&offset=${currentPage * cardsPerPage}`)
-		.then((res) => res.json())
-		.then((data) => {
-			const comicsQuantity = data.data.total;
-			console.log(comicsQuantity);
-		});
-
-	// 	nextPage.onclick = () => {
-	// 	currentPage++;
-	// 	console.log(currentPage);
-
-	// 	lastPage.onclick = () => {
-	// 		const remainder = data.data.total % cardsPerPage;
-	// 		if (remainder > 0) {
-	// 			currentPage = (data.data.total - remainder) / cardsPerPage;
-	// 		} else {
-	// 			currentPage = (data.data.total - remainder) / cardsPerPage - cardsPerPage;
-	// 		}
-	// 		nextPage.disabled = true;
-	// 		lastPage.disabled = true;
-	// 		console.log(currentPage);
-	// 	};
-
-	// 	previousPage.onclick = () => {
-	// 		currentPage--;
-	// 		console.log(currentPage);
-	// 		resultsSection.innerHTML = '';
-	// 		fetchComics(
-	// 			`${baseURL + collection + '?apikey=' + apiKey + '&orderBy=title&offset=' + currentPage * cardsPerPage}`
-	// 		);
-	// 	};
-
-	// 	firstPage.onclick = () => {
-	// 		currentPage = 0;
-	// 		firstPage.disabled = true;
-	// 		previousPage.disabled = true;
-	// 	};
-	// };
-};
 
 // ------------------------------ Search, type and order filters -------------------------
 
