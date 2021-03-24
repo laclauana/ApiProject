@@ -70,6 +70,8 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics', order = '
 
 fetchComics(currentPage, cardsPerPage, 'comics', 'title');
 
+// --------------------------- Updating pagination --------------------------------
+
 const updatePagination = (collection, order, currentPage, cardsPerPage) => {
 	fetch(`${baseURL}${collection}?apikey=${apiKey}&orderBy=${order}&offset=${currentPage * cardsPerPage}`)
 		.then((res) => res.json())
@@ -256,8 +258,6 @@ const updateResultsQuantity = (collection) => {
 	// 		: (shownComics.textContent = 'No están estos resultados 😪');
 	// });
 };
-
-// --------------------------- Updating pagination --------------------------------
 
 // ------------------------------ Search, type and order filters -------------------------
 
