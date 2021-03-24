@@ -10,6 +10,9 @@ const aside = document.querySelector('aside');
 const shownComics = document.querySelector('.title > p');
 const loader = document.querySelector('.overlay');
 const body = document.body;
+
+// ------------------------------ Creating pagination buttons ------------------------
+
 const paginationButtons = document.createElement('div');
 paginationButtons.setAttribute('class', 'center-button');
 body.appendChild(paginationButtons);
