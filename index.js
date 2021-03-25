@@ -10,14 +10,14 @@ const aside = document.querySelector('aside');
 const shownComics = document.querySelector('.title > p');
 const loader = document.querySelector('.overlay');
 const body = document.body;
+const cardsPerPage = 20;
+let currentPage = 0;
 
 // ------------------------------ Creating pagination buttons ------------------------
 
 const paginationButtons = document.createElement('div');
 paginationButtons.setAttribute('class', 'center-button');
 body.appendChild(paginationButtons);
-const cardsPerPage = 20;
-let currentPage = 0;
 paginationButtons.innerHTML = `
 
 		<button id="first-page">
@@ -81,17 +81,34 @@ const updatePagination = (collection, order, currentPage, cardsPerPage) => {
 			const previousPage = document.querySelector('#previous-page');
 			const lastPage = document.querySelector('#last-page');
 			const firstPage = document.querySelector('#first-page');
+
+			const buttonsAvailable = () => {
+				if (currentPage <= 0) {
+					firstPage.disabled = true;
+					previousPage.disabled = true;
+				} else if (currentPage > 0) {
+					firstPage.disabled = false;
+					previousPage.disabled = false;
+				}
+			};
+			buttonsAvailable();
 			firstPage.onclick = () => {
 				currentPage = 0;
+				console.log(currentPage);
 				fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+				buttonsAvailable();
 			};
 			nextPage.onclick = () => {
 				currentPage++;
+				console.log(currentPage);
 				fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+				buttonsAvailable();
 			};
 			previousPage.onclick = () => {
 				currentPage--;
+				console.log(currentPage);
 				fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+				buttonsAvailable();
 			};
 			lastPage.onclick = () => {
 				if (remainder > 0) {
@@ -99,22 +116,10 @@ const updatePagination = (collection, order, currentPage, cardsPerPage) => {
 				} else {
 					currentPage = (data.data.total - remainder) / cardsPerPage - cardsPerPage;
 				}
+				console.log(currentPage);
 				fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+				buttonsAvailable();
 			};
-
-			// if (currentPage <= 0) {
-			// 	firstPage.disabled = true;
-			// 	previousPage.disabled = true;
-			// } else if (currentPage > 0) {
-			// 	firstPage.disabled = false;
-			// 	previousPage.disabled = false;
-			// } else if ((currentPage = (data.data.total - remainder) / cardsPerPage)) {
-			// 	nextPage.disabled = true;
-			// 	lastPage.disabled = true;
-			// } else if ((currentPage = (data.data.total - remainder) / cardsPerPage - cardsPerPage)) {
-			// 	nextPage.disabled = false;
-			// 	lastPage.disabled = false;
-			// }
 		});
 };
 
