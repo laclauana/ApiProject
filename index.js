@@ -72,14 +72,12 @@ const fetchComics = (currentPage, cardsPerPage, collection = 'comics', order = '
 
 				// ----------------------- Updating shown results quantity ----------------------
 
-				shownComics.textContent = '';
-				let comicsQuantity = data.data.total;
-				shownComics.textContent = `Showing ${comicsQuantity} results`;
+				updateResultsQuantity(data.data.total);
 
 				// ----------------------- Accessing each comic and unpdating pagination ----------
 
 				eachComic('comics');
-				updatePagination(comicsQuantity, collection, order, currentPage);
+				updatePagination(data.data.total, collection, order, currentPage);
 			});
 			loader.classList.add('hidden');
 		});
@@ -91,7 +89,6 @@ const eachComic = (collection) => {
 	const comics = document.querySelectorAll('.comic');
 	comics.forEach((comic) => {
 		comic.onclick = () => {
-			shownComics.textContent = '';
 			accessComic(collection, comic.dataset.id);
 		};
 	});
@@ -101,12 +98,13 @@ const eachComic = (collection) => {
 
 const accessComic = (collection = 'comics', id) => {
 	loader.classList.remove('hidden');
+	aside.innerHTML = '';
 	fetch(`${baseURL}${collection}/${id}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const pickedComic = json.data.results;
 		pickedComic.map((comic) => {
 			resultsSection.innerHTML = '';
-			aside.innerHTML = '';
 
+			updateResultsQuantity(comic.characters.available);
 			comic.characters.available === 0
 				? (aside.innerHTML += `<p>No characters found 😕</p>`)
 				: fetchCharacters('comics', comic.id);
@@ -175,7 +173,7 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 	loader.classList.remove('hidden');
 	fetch(`${baseURL}${collection}/${characterID}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const character = json.data.results[0];
-		console.log(character.comics.available);
+		// console.log(character.comics.available);
 		aside.innerHTML = '';
 		displayCard(
 			resultsSection,
@@ -198,9 +196,10 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 		foundComics.map((comic) => {
 			displayCard(aside, 'comic', 'img-container', comic.id, noAvailableImg(comic), 'p', comic.title);
 
-			// -------------------- accessing each comic according to character's ID ---------------------
+			// -------------------- Accessing each comic according to character's ID ---------------------
 
 			eachComic('comics');
+			updateResultsQuantity(json.data.total);
 		});
 		loader.classList.add('hidden');
 	});
@@ -263,15 +262,12 @@ const updatePagination = (totalAmount, collection, order, currentPage) => {
 
 // --------------------------------- Updating results quantity ---------------------------
 
-const updateResultsQuantity = (collection) => {
-	// fetch(`${baseURL + collection + '?apikey=' + apiKey}`).then((res) => res.json()).then((data) => {
-	// 	const shownComics = document.querySelector('.title > p');
-	// 	shownComics.innerHTML = '';
-	// 	let comicsQuantity = data.data.total;
-	// 	return comicsQuantity != 0
-	// 		? `Mostrando ${comicsQuantity} resultados`
-	// 		: (shownComics.textContent = 'No están estos resultados 😪');
-	// });
+const updateResultsQuantity = (cards) => {
+	shownComics.textContent = '';
+	let comicsQuantity = cards;
+	return comicsQuantity !== 0
+		? (shownComics.textContent = `Showing ${comicsQuantity} results`)
+		: (shownComics.textContent = 'No further results 😪');
 };
 
 // ------------------------------ Search, type and order filters -------------------------
