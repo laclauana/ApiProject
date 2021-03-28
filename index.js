@@ -104,7 +104,7 @@ const accessComic = (collection = 'comics', id) => {
 			comic.characters.available === 0
 				? (aside.innerHTML += `<p>No characters found 😕</p>`)
 				: fetchCharacters('comics', comic.id);
-
+			loader.classList.add('hidden');
 			const date = new Date(comic.modified);
 			return (resultsSection.innerHTML += `
 					<article class="picked-comic" data-id=${comic.id}>
@@ -136,7 +136,6 @@ const accessComic = (collection = 'comics', id) => {
 const renderCharacters = (characters) =>
 	characters.map((character) => {
 		displayCard(aside, 'character', 'img-container', character.id, noAvailableImg(character), 'h2', character.name);
-		loader.classList.add('hidden');
 		accessCharacter();
 	});
 
@@ -355,9 +354,9 @@ const createBackButton = () => {
 		const buttonsContainer = document.querySelector('.center-button');
 		buttonsContainer.appendChild(backButton);
 		backButton.textContent = 'BACK';
-		backButton.onclick = (collection, record) => {
-			goBack(collection, record);
-			console.log('collection', collection, 'record', record);
+		backButton.onclick = (record) => {
+			goBack(record);
+			console.log('record', record);
 		};
 	}
 };
@@ -367,9 +366,8 @@ const createBackButton = () => {
 const goBack = (record) => {
 	resultsSection.innerHTML = '';
 	aside.innerHTML = '';
-	const currentURL = '';
-	!fetchComics('comics', 'title') ? currentURL : (currentURL = record);
-	console.log(record);
-	previousURL = currentURL;
-	return currentURL;
+	// const currentURL = '';
+	record = '';
+	!fetchComics('comics', 'title') ? record : (previousURL = record);
+	return previousURL;
 };
