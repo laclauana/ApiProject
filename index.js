@@ -51,39 +51,36 @@ const displayCard = (section, articleClass, imgClass, id, img, tag, title) => {
 
 // -------------------------- Fetching comics -----------------------
 
-const fetchComics = (currentPage, cardsPerPage, collection = 'comics', order = 'title') => {
+const renderComics = (comics, section) => {
+	comics.map((comic) => {
+		displayCard(section, 'comic', 'img-container', comic.id, noAvailableImg(comic), 'p', comic.title);
+	});
+};
+
+const fetchComics = (collection = 'comics', order = 'title') => {
 	loader.classList.remove('hidden');
+
 	fetch(`${baseURL}${collection}?apikey=${apiKey}&orderBy=${order}&offset=${currentPage * cardsPerPage}`)
 		.then((res) => res.json())
 		.then((data) => {
 			const comics = data.data.results;
 			resultsSection.innerHTML = '';
+			renderComics(comics, resultsSection);
 
-			comics.map((comic) => {
-				displayCard(
-					resultsSection,
-					'comic',
-					'img-container',
-					comic.id,
-					noAvailableImg(comic),
-					'p',
-					comic.title
-				);
+			// ----------------------- Updating shown results quantity ----------------------
 
-				// ----------------------- Updating shown results quantity ----------------------
+			updateResultsQuantity(data.data.total);
 
-				updateResultsQuantity(data.data.total);
+			// ----------------------- Accessing each comic and unpdating pagination ----------
 
-				// ----------------------- Accessing each comic and unpdating pagination ----------
-
-				eachComic('comics');
-				updatePagination(data.data.total, collection, order, currentPage);
-			});
+			eachComic('comics');
+			updatePagination(data.data.total, collection, order);
 			loader.classList.add('hidden');
 		});
+	// createRecord(collection, null, order);
 };
 
-fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+fetchComics('comics', 'title');
 
 const eachComic = (collection) => {
 	const comics = document.querySelectorAll('.comic');
@@ -134,28 +131,25 @@ const accessComic = (collection = 'comics', id) => {
 		loader.classList.add('hidden');
 		createBackButton();
 	});
+	// createRecord(collection, id, null);
 };
 
 // ----------------------- Fetching characters and accessing each of them --------------------------
 
+const renderCharacters = (characters) =>
+	characters.map((character) => {
+		displayCard(aside, 'character', 'img-container', character.id, noAvailableImg(character), 'h2', character.name);
+		accessCharacter();
+	});
+
 const fetchCharacters = (collection = 'comics', comicId) => {
 	fetch(`${baseURL}${collection}/${comicId}/characters?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundCharacters = json.data.results;
-		foundCharacters.map((character) => {
-			displayCard(
-				aside,
-				'character',
-				'img-container',
-				character.id,
-				noAvailableImg(character),
-				'h2',
-				character.name
-			);
-			accessCharacter();
-		});
+		renderCharacters(foundCharacters);
 		loader.classList.add('hidden');
 		createBackButton();
 	});
+	// createRecord(collection, comicId, null);
 };
 
 const accessCharacter = () => {
@@ -173,7 +167,7 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 	loader.classList.remove('hidden');
 	fetch(`${baseURL}${collection}/${characterID}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const character = json.data.results[0];
-		// console.log(character.comics.available);
+
 		aside.innerHTML = '';
 		displayCard(
 			resultsSection,
@@ -184,8 +178,9 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 			'h2',
 			character.name
 		);
-		updatePagination(character.comics.available, 'comics', 'title', currentPage++);
+		updatePagination(character.comics.available, 'comics', 'title');
 	});
+	// createRecord(collection, characterID, null);
 };
 
 // ------------------------ Fetching comics where characters participated on -------------------
@@ -193,46 +188,34 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 	fetch(`${baseURL}${collection}/${characterId}/comics?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundComics = json.data.results;
-		foundComics.map((comic) => {
-			displayCard(aside, 'comic', 'img-container', comic.id, noAvailableImg(comic), 'p', comic.title);
 
-			// -------------------- Accessing each comic according to character's ID ---------------------
+		renderComics(foundComics, aside);
+		// foundComics.map((comic) => {
+		// 	displayCard(aside, 'comic', 'img-container', comic.id, noAvailableImg(comic), 'p', comic.title);
 
-			eachComic('comics');
-			updateResultsQuantity(json.data.total);
-		});
-		loader.classList.add('hidden');
+		// -------------------- Accessing each comic according to character's ID ---------------------
+
+		eachComic('comics');
+		updateResultsQuantity(json.data.total);
 	});
+	loader.classList.add('hidden');
+	// });
+	// createRecord(collection, characterId, null);
 };
 
 // --------------------------- Updating pagination --------------------------------
 
-const buttonsAvailable = (currentPage, totalAmount, remainder) => {
-	if (currentPage <= 0) {
-		firstPage.disabled = true;
-		previousPage.disabled = true;
-		lastPage.disabled = false;
-		nextPage.disabled = false;
-	} else if (currentPage > 0) {
-		firstPage.disabled = false;
-		previousPage.disabled = false;
-		lastPage.disabled = false;
-		nextPage.disabled = false;
-	} else if ((currentPage = (totalAmount - remainder) / cardsPerPage)) {
-		lastPage.disabled = true;
-		nextPage.disabled = true;
-	} else if ((currentPage = (totalAmount - remainder) / cardsPerPage - cardsPerPage)) {
-		lastPage.disabled = true;
-		nextPage.disabled = true;
-	}
+const buttonsAvailable = (totalAmount) => {
+	const isLastPage = currentPage === Math.floor(totalAmount / cardsPerPage);
+	previousPage.disabled = currentPage <= 0;
+	firstPage.disabled = currentPage <= 0;
+	lastPage.disabled = isLastPage;
+	nextPage.disabled = isLastPage;
 };
 
-const updatePagination = (totalAmount, collection, order, currentPage) => {
-	const remainder = totalAmount % cardsPerPage;
-	buttonsAvailable(currentPage, totalAmount, remainder);
-	// console.log('currentPage:', currentPage, 'totalAmount:', totalAmount, 'remaider:', remainder);
+const updatePagination = (totalAmount, collection, order) => {
 	const runFetch = () => {
-		collection !== 'comics' ? sortCharactersBy(order) : fetchComics(currentPage, cardsPerPage, collection, order);
+		collection !== 'comics' ? sortCharactersBy(order) : fetchComics(collection, order);
 	};
 
 	firstPage.onclick = () => {
@@ -248,16 +231,10 @@ const updatePagination = (totalAmount, collection, order, currentPage) => {
 		runFetch();
 	};
 	lastPage.onclick = () => {
-		if (remainder > 0) {
-			currentPage = (totalAmount - remainder) / cardsPerPage;
-			// console.log('(totalAmount - remainder) / cardsPerPage', currentPage);
-		} else {
-			currentPage = totalAmount / cardsPerPage - cardsPerPage;
-			// console.log('totalAmount / cardsPerPage - cardsPerPage', currentPage);
-		}
-		// console.log('currentPage', currentPage, 'remainder', remainder);
+		currentPage = Math.floor(totalAmount / cardsPerPage);
 		runFetch();
 	};
+	buttonsAvailable(totalAmount);
 };
 
 // --------------------------------- Updating results quantity ---------------------------
@@ -274,8 +251,7 @@ const updateResultsQuantity = (cards) => {
 
 searchInput.value = '';
 searchInput.oninput = () => {
-	console.log(searchInput.value);
-	search();
+	// search();
 	// const word = searchInput.value;
 	// resultsSection.innerHTML = '';
 	// fetch(`${baseURL}comics?apikey=${apiKey}&titleStartsWith=${word}`).then((res) => res.json()).then((data) => {
@@ -283,7 +259,6 @@ searchInput.oninput = () => {
 	// 	// console.log(resultsFound);
 	// 	resultsFound.map((userSearch) => {
 	// 		console.log(userSearch.title);
-
 	// 		displayCard(
 	// 			resultsSection,
 	// 			'comic',
@@ -293,47 +268,48 @@ searchInput.oninput = () => {
 	// 			'p',
 	// 			userSearch.title
 	// 		);
-
 	// 		eachComic(collection);
 	// 		searchInput.value = '';
 	// 	});
 	// });
 };
 
-// searchButton.onsubmit = (e) => {
-// 	e.preventDefault();
+searchButton.onsubmit = (e) => {
+	e.preventDefault();
+	search();
+};
+
+// typeSelect.onsubmit = () => {
 // 	search();
 // };
 
-typeSelect.onsubmit = () => {
-	search();
-};
-
-orderSelect.onsubmit = () => {
-	search();
-};
+// orderSelect.onsubmit = () => {
+// 	search();
+// };
 
 const search = () => {
 	const orderOption = orderSelect.options[orderSelect.selectedIndex].value;
+	console.log(orderOption);
 	const typeOption = typeSelect.options[typeSelect.selectedIndex].value;
+	console.log(typeOption);
 
 	// const orderByOption = (order) => {
-	// 	fetchComics(currentPage, cardsPerPage, 'comics', order);
+	// 	fetchComics('comics', order);
 	// };
 	if (typeOption === 'comics') {
 		console.log('type option: Comics');
 		if (orderOption === 'A-Z') {
 			// orderByOption('title');
-			fetchComics(currentPage, cardsPerPage, 'comics', 'title');
+			fetchComics('comics', 'title');
 		} else if (orderOption === 'Z-A') {
 			// orderByOption('-title');
-			fetchComics(currentPage, cardsPerPage, 'comics', '-title');
+			fetchComics('comics', '-title');
 		} else if (orderOption === 'most-updated-ones') {
 			// orderByOption('-onsaleDate');
-			fetchComics(currentPage, cardsPerPage, 'comics', '-onsaleDate');
+			fetchComics('comics', '-onsaleDate');
 		} else if (orderOption === 'most-old-ones') {
 			// orderByOption('onsaleDate');
-			fetchComics(currentPage, cardsPerPage, 'comics', 'onsaleDate');
+			fetchComics('comics', 'onsaleDate');
 		}
 	} else if (typeOption === 'characters') {
 		console.log('type option: Characters');
@@ -391,20 +367,44 @@ const createBackButton = () => {
 		buttonsContainer.appendChild(backButton);
 		backButton.textContent = 'BACK';
 		backButton.onclick = () => {
-			// goBack();
+			goBack();
 		};
 	}
 };
 
 // --------------------- "back" button function ------------------------
 
-const goBack = (collection) => {
-	console.log('estas retrocediendo');
-	resultsSection.innerHTML = '';
-	aside.innerHTML = '';
+// const goBack = (collection) => {
+// 	console.log('estas retrocediendo');
+// 	resultsSection.innerHTML = '';
+// 	aside.innerHTML = '';
 
-	// if (collection === 'comics') {
-	fetchComics(currentPage, cardsPerPage, collection, 'title');
-	// } else {
-	// }
-};
+// 	// if (collection === 'comics') {
+// 	fetchComics(collection, 'title');
+// 	// } else {
+// 	// }
+// };
+
+// const history = [];
+
+// const createRecord = (collection, id, order) => {
+// 	history.push({ collection, id, order });
+// };
+
+// const goBack = () => {
+// 	console.log('hiciste click');
+// 	const { collection, id, order } = history[history.length - 2];
+// 	console.log('history', history);
+// 	console.log(collection, id, order);
+// 	switch (collection) {
+// 		case 'comics':
+// 			fetchComics(collection, order);
+// 			break;
+// 		case 'characters':
+// 			fetchCharacters(collection, id);
+// 			break;
+// 		default:
+// 			break;
+// 	}
+// 	// history.pop();
+// };
