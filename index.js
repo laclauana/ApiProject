@@ -13,6 +13,7 @@ const loader = document.querySelector('.overlay');
 const body = document.body;
 const cardsPerPage = 20;
 let currentPage = 0;
+let previousURL = '';
 
 // ------------------------------ Creating pagination buttons ------------------------
 
@@ -76,7 +77,6 @@ const fetchComics = (collection = 'comics', order = 'title') => {
 			eachComic('comics');
 			updatePagination(data.data.total, collection, order);
 		});
-	// createRecord(collection, null, order);
 };
 
 fetchComics('comics', 'title');
@@ -129,7 +129,6 @@ const accessComic = (collection = 'comics', id) => {
 		});
 		createBackButton();
 	});
-	// createRecord(collection, id, null);
 };
 
 // ----------------------- Fetching characters and accessing each of them --------------------------
@@ -147,7 +146,6 @@ const fetchCharacters = (collection = 'comics', comicId) => {
 		renderCharacters(foundCharacters);
 		createBackButton();
 	});
-	// createRecord(collection, comicId, null);
 };
 
 const accessCharacter = () => {
@@ -178,7 +176,6 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 		);
 		updatePagination(character.comics.available, 'comics', 'title');
 	});
-	// createRecord(collection, characterID, null);
 };
 
 // ------------------------ Fetching comics where characters participated on -------------------
@@ -193,7 +190,6 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 		eachComic('comics');
 		updateResultsQuantity(json.data.total);
 	});
-	// createRecord(collection, characterId, null);
 };
 
 // --------------------------- Updating pagination --------------------------------
@@ -359,45 +355,21 @@ const createBackButton = () => {
 		const buttonsContainer = document.querySelector('.center-button');
 		buttonsContainer.appendChild(backButton);
 		backButton.textContent = 'BACK';
-		backButton.onclick = () => {
-			goBack();
+		backButton.onclick = (collection, record) => {
+			goBack(collection, record);
+			console.log('collection', collection, 'record', record);
 		};
 	}
 };
 
 // --------------------- "back" button function ------------------------
 
-// const goBack = (collection) => {
-// 	console.log('estas retrocediendo');
-// 	resultsSection.innerHTML = '';
-// 	aside.innerHTML = '';
-
-// 	// if (collection === 'comics') {
-// 	fetchComics(collection, 'title');
-// 	// } else {
-// 	// }
-// };
-
-// const history = [];
-
-// const createRecord = (collection, id, order) => {
-// 	history.push({ collection, id, order });
-// };
-
-// const goBack = () => {
-// 	console.log('hiciste click');
-// 	const { collection, id, order } = history[history.length - 2];
-// 	console.log('history', history);
-// 	console.log(collection, id, order);
-// 	switch (collection) {
-// 		case 'comics':
-// 			fetchComics(collection, order);
-// 			break;
-// 		case 'characters':
-// 			fetchCharacters(collection, id);
-// 			break;
-// 		default:
-// 			break;
-// 	}
-// 	// history.pop();
-// };
+const goBack = (record) => {
+	resultsSection.innerHTML = '';
+	aside.innerHTML = '';
+	const currentURL = '';
+	!fetchComics('comics', 'title') ? currentURL : (currentURL = record);
+	console.log(record);
+	previousURL = currentURL;
+	return currentURL;
+};
