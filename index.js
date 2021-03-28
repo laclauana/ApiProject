@@ -55,11 +55,11 @@ const renderComics = (comics, section) => {
 	comics.map((comic) => {
 		displayCard(section, 'comic', 'img-container', comic.id, noAvailableImg(comic), 'p', comic.title);
 	});
+	loader.classList.add('hidden');
 };
 
 const fetchComics = (collection = 'comics', order = 'title') => {
 	loader.classList.remove('hidden');
-
 	fetch(`${baseURL}${collection}?apikey=${apiKey}&orderBy=${order}&offset=${currentPage * cardsPerPage}`)
 		.then((res) => res.json())
 		.then((data) => {
@@ -75,7 +75,6 @@ const fetchComics = (collection = 'comics', order = 'title') => {
 
 			eachComic('comics');
 			updatePagination(data.data.total, collection, order);
-			loader.classList.add('hidden');
 		});
 	// createRecord(collection, null, order);
 };
@@ -86,6 +85,7 @@ const eachComic = (collection) => {
 	const comics = document.querySelectorAll('.comic');
 	comics.forEach((comic) => {
 		comic.onclick = () => {
+			loader.classList.remove('hidden');
 			accessComic(collection, comic.dataset.id);
 		};
 	});
@@ -94,7 +94,6 @@ const eachComic = (collection) => {
 // -------------------------------- Display comic details -----------------------------
 
 const accessComic = (collection = 'comics', id) => {
-	loader.classList.remove('hidden');
 	aside.innerHTML = '';
 	fetch(`${baseURL}${collection}/${id}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const pickedComic = json.data.results;
@@ -128,7 +127,6 @@ const accessComic = (collection = 'comics', id) => {
 					</article>									
 							`);
 		});
-		loader.classList.add('hidden');
 		createBackButton();
 	});
 	// createRecord(collection, id, null);
@@ -139,6 +137,7 @@ const accessComic = (collection = 'comics', id) => {
 const renderCharacters = (characters) =>
 	characters.map((character) => {
 		displayCard(aside, 'character', 'img-container', character.id, noAvailableImg(character), 'h2', character.name);
+		loader.classList.add('hidden');
 		accessCharacter();
 	});
 
@@ -146,7 +145,6 @@ const fetchCharacters = (collection = 'comics', comicId) => {
 	fetch(`${baseURL}${collection}/${comicId}/characters?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundCharacters = json.data.results;
 		renderCharacters(foundCharacters);
-		loader.classList.add('hidden');
 		createBackButton();
 	});
 	// createRecord(collection, comicId, null);
@@ -157,6 +155,7 @@ const accessCharacter = () => {
 	pickedCharacter.forEach((character) => {
 		character.onclick = () => {
 			resultsSection.innerHTML = '';
+			loader.classList.remove('hidden');
 			fetchCharacterID('characters', character.dataset.id);
 			fetchComicsFromCharacters('characters', character.dataset.id);
 		};
@@ -164,7 +163,6 @@ const accessCharacter = () => {
 };
 
 const fetchCharacterID = (collection = 'characters', characterID) => {
-	loader.classList.remove('hidden');
 	fetch(`${baseURL}${collection}/${characterID}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const character = json.data.results[0];
 
@@ -188,18 +186,13 @@ const fetchCharacterID = (collection = 'characters', characterID) => {
 const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 	fetch(`${baseURL}${collection}/${characterId}/comics?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundComics = json.data.results;
-
 		renderComics(foundComics, aside);
-		// foundComics.map((comic) => {
-		// 	displayCard(aside, 'comic', 'img-container', comic.id, noAvailableImg(comic), 'p', comic.title);
 
 		// -------------------- Accessing each comic according to character's ID ---------------------
 
 		eachComic('comics');
 		updateResultsQuantity(json.data.total);
 	});
-	loader.classList.add('hidden');
-	// });
 	// createRecord(collection, characterId, null);
 };
 
