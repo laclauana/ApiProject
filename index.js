@@ -373,6 +373,12 @@ const goBack = (history, param1, param2) => {
 	backButton.onclick = () => {
 		aside.innerHTML = '';
 		console.log(history, param1, param2);
+		// while (history.toString().includes('pickedComic')) {
+		// 	history = fetchComics;
+		// 	param1 = 'comics';
+		// 	param2 = 'title';
+		// }
+		// history(param1, param2);
 		history(param1, param2);
 	};
 };
