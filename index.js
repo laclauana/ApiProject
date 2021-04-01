@@ -11,17 +11,19 @@ const aside = document.querySelector('aside');
 const shownComics = document.querySelector('.title > p');
 const loader = document.querySelector('.overlay');
 const body = document.body;
-const cardsPerPage = 20;
-let currentPage = 0;
-let previousURL = '';
-
-// ------------------------------ Creating pagination buttons ------------------------
-
 const paginationButtons = document.createElement('div');
 paginationButtons.setAttribute('class', 'center-button');
 body.appendChild(paginationButtons);
-paginationButtons.innerHTML = `
+const buttonsContainer = document.querySelector('.center-button');
+const backButton = document.createElement('button');
+backButton.textContent = 'BACK';
+const cardsPerPage = 20;
+let currentPage = 0;
+let executed = false;
 
+// ------------------------------ Creating pagination buttons ------------------------
+
+paginationButtons.innerHTML = `
 		<button id="first-page">
 			<< </button>
 		<button id="previous-page">
@@ -37,6 +39,15 @@ const previousPage = document.querySelector('#previous-page');
 const lastPage = document.querySelector('#last-page');
 const firstPage = document.querySelector('#first-page');
 
+// ------------------------ Creating a "back" button just once ----------------------
+
+const createBackButton = () => {
+	if (!executed) {
+		executed = true;
+		buttonsContainer.appendChild(backButton);
+	}
+};
+
 // -------------------------- Cards display -----------------------------
 
 const displayCard = (section, articleClass, imgClass, id, img, tag, title) => {
@@ -50,12 +61,21 @@ const displayCard = (section, articleClass, imgClass, id, img, tag, title) => {
 	`;
 };
 
+// -------------------------- When fetched card has no img to show -----------------
+
+const noAvailableImg = (data) => {
+	return data.thumbnail.path.includes('not_available')
+		? `./assets/noPhotoAvailable.jpg`
+		: `${data.thumbnail.path}.${data.thumbnail.extension}`;
+};
+
 // -------------------------- Fetching comics -----------------------
 
 const renderComics = (comics, section) => {
 	comics.map((comic) => {
 		displayCard(section, 'comic', 'img-container', comic.id, noAvailableImg(comic), 'p', comic.title);
 	});
+
 	loader.classList.add('hidden');
 };
 
@@ -104,7 +124,14 @@ const accessComic = (collection = 'comics', id) => {
 			comic.characters.available === 0
 				? (aside.innerHTML += `<p>No characters found 😕</p>`)
 				: fetchCharacters('comics', comic.id);
+
+			// ---------------------- Enable to retrieve this function
+
+			goBack(accessComic, collection, comic.id);
 			loader.classList.add('hidden');
+
+			// -------------------- Show comic details ------------------
+
 			const date = new Date(comic.modified);
 			return (resultsSection.innerHTML += `
 					<article class="picked-comic" data-id=${comic.id}>
@@ -124,7 +151,7 @@ const accessComic = (collection = 'comics', id) => {
 								<p>Description: </p>
 								<p> ${comic.description || 'No description round here 😁'} </p>
 							</div>
-					</article>									
+					</article>
 							`);
 		});
 		createBackButton();
@@ -133,23 +160,30 @@ const accessComic = (collection = 'comics', id) => {
 
 // ----------------------- Fetching characters and accessing each of them --------------------------
 
-const renderCharacters = (characters) =>
+const renderCharacters = (characters, section) => {
 	characters.map((character) => {
-		displayCard(aside, 'character', 'img-container', character.id, noAvailableImg(character), 'h2', character.name);
+		displayCard(
+			section,
+			'character',
+			'img-container',
+			character.id,
+			noAvailableImg(character),
+			'h2',
+			character.name
+		);
 		accessCharacter();
 	});
+};
 
 const fetchCharacters = (collection = 'comics', comicId) => {
 	fetch(`${baseURL}${collection}/${comicId}/characters?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundCharacters = json.data.results;
-		renderCharacters(foundCharacters);
-		createBackButton();
+		renderCharacters(foundCharacters, aside);
 	});
 };
 
-const accessCharacter = () => {
-	const pickedCharacter = document.querySelectorAll('.character');
-	pickedCharacter.forEach((character) => {
+const eachCharacter = (characters) => {
+	characters.forEach((character) => {
 		character.onclick = () => {
 			resultsSection.innerHTML = '';
 			loader.classList.remove('hidden');
@@ -157,6 +191,11 @@ const accessCharacter = () => {
 			fetchComicsFromCharacters('characters', character.dataset.id);
 		};
 	});
+};
+
+const accessCharacter = () => {
+	const pickedCharacter = document.querySelectorAll('.character');
+	eachCharacter(pickedCharacter);
 };
 
 const fetchCharacterID = (collection = 'characters', characterID) => {
@@ -187,6 +226,9 @@ const fetchComicsFromCharacters = (collection = 'characters', characterId) => {
 		// -------------------- Accessing each comic according to character's ID ---------------------
 
 		eachComic('comics');
+
+		// --------- Updating results quantity --------------
+
 		updateResultsQuantity(json.data.total);
 	});
 };
@@ -203,6 +245,7 @@ const buttonsAvailable = (totalAmount) => {
 
 const updatePagination = (totalAmount, collection, order) => {
 	const runFetch = () => {
+		aside.innerHTML = '';
 		collection !== 'comics' ? sortCharactersBy(order) : fetchComics(collection, order);
 	};
 
@@ -319,55 +362,17 @@ const search = () => {
 const sortCharactersBy = (order) => {
 	fetch(`${baseURL}characters?apikey=${apiKey}&orderBy=${order}`).then((res) => res.json()).then((data) => {
 		const characters = data.data.results;
-		// console.log(characters);
 		resultsSection.innerHTML = '';
-		characters.map((character) => {
-			displayCard(
-				resultsSection,
-				'character',
-				'img-container',
-				character.id,
-				noAvailableImg(character),
-				'h2',
-				character.name
-			);
-			accessCharacter();
-		});
+		renderCharacters(characters, resultsSection);
 	});
-};
-
-// -------------------------- When fetched card has no img to show -----------------
-
-const noAvailableImg = (data) => {
-	return data.thumbnail.path.includes('not_available')
-		? `./assets/noPhotoAvailable.jpg`
-		: `${data.thumbnail.path}.${data.thumbnail.extension}`;
-};
-
-// ------------------------ Creating a "back" button just once ----------------------
-
-let executed = false;
-const createBackButton = () => {
-	if (!executed) {
-		executed = true;
-		const backButton = document.createElement('button');
-		const buttonsContainer = document.querySelector('.center-button');
-		buttonsContainer.appendChild(backButton);
-		backButton.textContent = 'BACK';
-		backButton.onclick = (record) => {
-			goBack(record);
-			console.log('record', record);
-		};
-	}
 };
 
 // --------------------- "back" button function ------------------------
 
-const goBack = (record) => {
-	resultsSection.innerHTML = '';
-	aside.innerHTML = '';
-	// const currentURL = '';
-	record = '';
-	!fetchComics('comics', 'title') ? record : (previousURL = record);
-	return previousURL;
+const goBack = (history, param1, param2) => {
+	backButton.onclick = () => {
+		aside.innerHTML = '';
+		console.log(history, param1, param2);
+		history(param1, param2);
+	};
 };
