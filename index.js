@@ -20,6 +20,7 @@ backButton.textContent = 'BACK';
 const cardsPerPage = 20;
 let currentPage = 0;
 let executed = false;
+// let lastVisited = [];
 
 // ------------------------------ Creating pagination buttons ------------------------
 
@@ -121,13 +122,14 @@ const accessComic = (collection = 'comics', id) => {
 			resultsSection.innerHTML = '';
 
 			updateResultsQuantity(comic.characters.available);
+
 			comic.characters.available === 0
 				? (aside.innerHTML += `<p>No characters found 😕</p>`)
 				: fetchCharacters('comics', comic.id);
 
-			// ---------------------- Enable to retrieve this function
+			// ---------------------- Enable to retrieve this function ------------------
 
-			goBack(accessComic, collection, comic.id);
+			!executed ? goBack(fetchComics, collection, 'title') : goBack(accessComic, collection, comic.id);
 			loader.classList.add('hidden');
 
 			// -------------------- Show comic details ------------------
@@ -201,7 +203,6 @@ const accessCharacter = () => {
 const fetchCharacterID = (collection = 'characters', characterID) => {
 	fetch(`${baseURL}${collection}/${characterID}?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const character = json.data.results[0];
-
 		aside.innerHTML = '';
 		displayCard(
 			resultsSection,
@@ -372,13 +373,9 @@ const sortCharactersBy = (order) => {
 const goBack = (history, param1, param2) => {
 	backButton.onclick = () => {
 		aside.innerHTML = '';
-		console.log(history, param1, param2);
-		// while (history.toString().includes('pickedComic')) {
-		// 	history = fetchComics;
-		// 	param1 = 'comics';
-		// 	param2 = 'title';
-		// }
-		// history(param1, param2);
+		// console.log(history, param1, param2);
 		history(param1, param2);
+
+		// lastVisited.push(`${history}(${param1}, ${param2})`);
 	};
 };
