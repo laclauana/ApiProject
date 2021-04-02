@@ -5,7 +5,7 @@ const apiKey = '5815682df904a6080be6caaebd915b02';
 const searchInput = document.querySelector('#search-input');
 const typeSelect = document.querySelector('#type');
 const orderSelect = document.querySelector('#order');
-const searchButton = document.querySelector('.search');
+const form = document.querySelector('form');
 const resultsSection = document.querySelector('.results');
 const aside = document.querySelector('aside');
 const shownComics = document.querySelector('.title > p');
@@ -281,43 +281,20 @@ const updateResultsQuantity = (cards) => {
 
 // ------------------------------ Search, type and order filters -------------------------
 
-searchInput.value = '';
-searchInput.oninput = () => {
-	// search();
-	// const word = searchInput.value;
-	// resultsSection.innerHTML = '';
-	// fetch(`${baseURL}comics?apikey=${apiKey}&titleStartsWith=${word}`).then((res) => res.json()).then((data) => {
-	// 	const resultsFound = data.data.results;
-	// 	// console.log(resultsFound);
-	// 	resultsFound.map((userSearch) => {
-	// 		console.log(userSearch.title);
-	// 		displayCard(
-	// 			resultsSection,
-	// 			'comic',
-	// 			'img-container',
-	// 			userSearch.id,
-	// 			noAvailableImg(userSearch),
-	// 			'p',
-	// 			userSearch.title
-	// 		);
-	// 		eachComic(collection);
-	// 		searchInput.value = '';
-	// 	});
-	// });
-};
-
-searchButton.onsubmit = (e) => {
+form.onsubmit = (e) => {
 	e.preventDefault();
 	search();
 };
 
-// typeSelect.onsubmit = () => {
-// 	search();
-// };
+const sortCharactersBy = (order) => {
+	fetch(`${baseURL}characters?apikey=${apiKey}&orderBy=${order}`).then((res) => res.json()).then((data) => {
+		const characters = data.data.results;
+		resultsSection.innerHTML = '';
+		renderCharacters(characters, resultsSection);
+	});
+};
 
-// orderSelect.onsubmit = () => {
-// 	search();
-// };
+searchInput.value = '';
 
 const search = () => {
 	const orderOption = orderSelect.options[orderSelect.selectedIndex].value;
@@ -325,23 +302,42 @@ const search = () => {
 	const typeOption = typeSelect.options[typeSelect.selectedIndex].value;
 	console.log(typeOption);
 
-	// const orderByOption = (order) => {
-	// 	fetchComics('comics', order);
-	// };
+	searchInput.oninput = () => {
+		const word = searchInput.value;
+		resultsSection.innerHTML = '';
+		fetch(`${baseURL}comics?apikey=${apiKey}&titleStartsWith=${word}`).then((res) => res.json()).then((data) => {
+			const resultsFound = data.data.results;
+			// console.log(resultsFound);
+			resultsFound.map((userSearch) => {
+				console.log(userSearch.title);
+				displayCard(
+					resultsSection,
+					'comic',
+					'img-container',
+					userSearch.id,
+					noAvailableImg(userSearch),
+					'p',
+					userSearch.title
+				);
+				eachComic(userSearch);
+				searchInput.value = '';
+			});
+		});
+	};
+
+	const orderByOption = (order) => {
+		fetchComics('comics', order);
+	};
 	if (typeOption === 'comics') {
 		console.log('type option: Comics');
 		if (orderOption === 'A-Z') {
-			// orderByOption('title');
-			fetchComics('comics', 'title');
+			orderByOption('title');
 		} else if (orderOption === 'Z-A') {
-			// orderByOption('-title');
-			fetchComics('comics', '-title');
+			orderByOption('-title');
 		} else if (orderOption === 'most-updated-ones') {
-			// orderByOption('-onsaleDate');
-			fetchComics('comics', '-onsaleDate');
+			orderByOption('-onsaleDate');
 		} else if (orderOption === 'most-old-ones') {
-			// orderByOption('onsaleDate');
-			fetchComics('comics', 'onsaleDate');
+			orderByOption('onsaleDate');
 		}
 	} else if (typeOption === 'characters') {
 		console.log('type option: Characters');
@@ -358,14 +354,6 @@ const search = () => {
 		// updateResultsQuantity(collection);
 	}
 	// goBack(typeOption);
-};
-
-const sortCharactersBy = (order) => {
-	fetch(`${baseURL}characters?apikey=${apiKey}&orderBy=${order}`).then((res) => res.json()).then((data) => {
-		const characters = data.data.results;
-		resultsSection.innerHTML = '';
-		renderCharacters(characters, resultsSection);
-	});
 };
 
 // --------------------- "back" button function ------------------------
