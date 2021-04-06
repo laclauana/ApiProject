@@ -247,7 +247,7 @@ const buttonsAvailable = (totalAmount) => {
 const updatePagination = (totalAmount, collection, order) => {
 	const runFetch = () => {
 		aside.innerHTML = '';
-		collection !== 'comics' ? sortCharactersBy(order) : fetchComics(order);
+		collection !== 'comics' ? accessCharacter() : fetchComics(order);
 	};
 
 	firstPage.onclick = () => {
@@ -286,48 +286,59 @@ form.onsubmit = (e) => {
 	search();
 };
 
-const search = () => {
-	resultsSection.innerHTML = '';
-	const word = searchInput.value;
+const params = (userInput) => {
 	const orderOption = orderSelect.value;
 	const typeOption = typeSelect.value;
-	fetch(
-		`${baseURL}${typeOption}?apikey=${apiKey}&${typeOption == 'comics'
-			? 'title'
-			: 'name'}StartsWith=${word}&orderBy=${orderOption == 'A-Z' && typeOption == 'comics'
-			? 'title'
-			: orderOption == 'Z-A' && typeOption == 'comics'
-				? '-title'
-				: orderOption == 'most-updated-ones' && typeOption == 'comics'
-					? '-onsaleDate'
-					: orderOption == 'most-old-ones' && typeOption == 'comics'
-						? 'onsaleDate'
-						: orderOption == 'A-Z' && typeOption == 'characters'
-							? 'name'
-							: orderOption == 'Z-A' && typeOption == 'characters'
-								? '-name'
-								: orderOption == 'most-updated-ones' && typeOption == 'characters'
-									? 'modified'
-									: orderOption == 'characters' && typeOption == 'characters' ? '-modified' : 'name'}`
-	)
-		.then((res) => res.json())
-		.then((data) => {
-			const resultsFound = data.data.results;
-			typeOption == 'comics'
-				? resultsFound.map((userSearch) => {
-						displayCard(
-							resultsSection,
-							'comic',
-							'img-container',
-							userSearch.id,
-							noAvailableImg(userSearch),
-							'p',
-							userSearch.title
-						);
-						eachComic();
-					})
-				: renderCharacters(resultsFound, resultsSection);
+	return `${baseURL}${typeOption}?apikey=${apiKey}${userInput}&orderBy=${orderOption == 'A-Z' &&
+	typeOption == 'comics'
+		? 'title'
+		: orderOption == 'Z-A' && typeOption == 'comics'
+			? '-title'
+			: orderOption == 'most-updated-ones' && typeOption == 'comics'
+				? '-onsaleDate'
+				: orderOption == 'most-old-ones' && typeOption == 'comics'
+					? 'onsaleDate'
+					: orderOption == 'A-Z' && typeOption == 'characters'
+						? 'name'
+						: orderOption == 'Z-A' && typeOption == 'characters'
+							? '-name'
+							: orderOption == 'most-updated-ones' && typeOption == 'characters'
+								? 'modified'
+								: orderOption == 'characters' && typeOption == 'characters' ? '-modified' : 'name'}`;
+};
+
+const displayContent = (info) => {
+	const typeOption = typeSelect.value;
+	typeOption == 'comics'
+		? info.map((userSearch) => {
+				displayCard(
+					resultsSection,
+					'comic',
+					'img-container',
+					userSearch.id,
+					noAvailableImg(userSearch),
+					'p',
+					userSearch.title
+				);
+				eachComic();
+			})
+		: renderCharacters(info, resultsSection);
+};
+
+const search = () => {
+	resultsSection.innerHTML = '';
+	const typeOption = typeSelect.value;
+	if (searchInput.value !== '') {
+		fetch(params(`&${typeOption == 'comics' ? 'title' : 'name'}StartsWith=${searchInput.value}`))
+			.then((res) => res.json())
+			.then((data) => {
+				displayContent(data.data.results);
+			});
+	} else {
+		fetch(params('')).then((res) => res.json()).then((data) => {
+			displayContent(data.data.results);
 		});
+	}
 	// updatePagination(totalAmount, collection, order, currentPage)
 	// updateResultsQuantity(collection);
 	// goBack(typeOption);
