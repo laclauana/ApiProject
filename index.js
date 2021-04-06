@@ -2,11 +2,11 @@
 
 const baseURL = 'https://gateway.marvel.com/v1/public/';
 const apiKey = '5815682df904a6080be6caaebd915b02';
+const form = document.forms[0];
 const searchInput = document.querySelector('#search-input');
 searchInput.value = '';
 const typeSelect = document.querySelector('#type');
 const orderSelect = document.querySelector('#order');
-const form = document.querySelector('form');
 const resultsSection = document.querySelector('.results');
 const aside = document.querySelector('aside');
 const shownComics = document.querySelector('.title > p');
@@ -286,65 +286,62 @@ form.onsubmit = (e) => {
 	search();
 };
 
-const orderByOption = (order) => {
-	fetchComics(order);
+typeSelect.onchange = () => {
+	search();
 };
 
-const sortCharactersBy = (order) => {
-	fetch(`${baseURL}characters?apikey=${apiKey}&orderBy=${order}`).then((res) => res.json()).then((data) => {
-		const characters = data.data.results;
-		resultsSection.innerHTML = '';
-		renderCharacters(characters, resultsSection);
-	});
+orderSelect.onchange = () => {
+	search();
 };
 
 searchInput.oninput = () => {
-	const word = searchInput.value;
-	resultsSection.innerHTML = '';
-	fetch(`${baseURL}comics?apikey=${apiKey}&titleStartsWith=${word}`).then((res) => res.json()).then((data) => {
-		const resultsFound = data.data.results;
-		resultsFound.map((userSearch) => {
-			displayCard(
-				resultsSection,
-				'comic',
-				'img-container',
-				userSearch.id,
-				noAvailableImg(userSearch),
-				'p',
-				userSearch.title
-			);
-			eachComic();
-		});
-	});
+	search();
 };
 
 const search = () => {
-	const orderOption = orderSelect.options[orderSelect.selectedIndex].value;
-	const typeOption = typeSelect.options[typeSelect.selectedIndex].value;
-	if (typeOption === 'comics') {
-		if (orderOption === 'A-Z') {
-			orderByOption('title');
-		} else if (orderOption === 'Z-A') {
-			orderByOption('-title');
-		} else if (orderOption === 'most-updated-ones') {
-			orderByOption('-onsaleDate');
-		} else if (orderOption === 'most-old-ones') {
-			orderByOption('onsaleDate');
-		}
-	} else if (typeOption === 'characters') {
-		console.log('type option: Characters');
-		if (orderOption === 'A-Z') {
-			sortCharactersBy('name');
-		} else if (orderOption === 'Z-A') {
-			sortCharactersBy('-name');
-		} else if (orderOption === 'most-updated-ones') {
-			sortCharactersBy('modified');
-		} else if (orderOption === 'most-old-ones') {
-			sortCharactersBy('-modified');
-		}
-		// updatePagination(totalAmount, collection, order, currentPage)
-		// updateResultsQuantity(collection);
-	}
+	resultsSection.innerHTML = '';
+	const word = searchInput.value;
+	const orderOption = orderSelect.value;
+	const typeOption = typeSelect.value;
+	fetch(
+		`${baseURL}${typeOption}?apikey=${apiKey}&${typeOption == 'comics'
+			? 'title'
+			: 'name'}StartsWith=${word}&orderBy=${orderOption == 'A-Z' && typeOption == 'comics'
+			? 'title'
+			: orderOption == 'Z-A' && typeOption == 'comics'
+				? '-title'
+				: orderOption == 'most-updated-ones' && typeOption == 'comics'
+					? '-onsaleDate'
+					: orderOption == 'most-old-ones' && typeOption == 'comics'
+						? 'onsaleDate'
+						: orderOption == 'A-Z' && typeOption == 'characters'
+							? 'name'
+							: orderOption == 'Z-A' && typeOption == 'characters'
+								? '-name'
+								: orderOption == 'most-updated-ones' && typeOption == 'characters'
+									? 'modified'
+									: orderOption == 'characters' && typeOption == 'characters' ? '-modified' : 'name'}`
+	)
+		.then((res) => res.json())
+		.then((data) => {
+			const resultsFound = data.data.results;
+			typeOption == 'comics'
+				? resultsFound.map((userSearch) => {
+						displayCard(
+							resultsSection,
+							'comic',
+							'img-container',
+							userSearch.id,
+							noAvailableImg(userSearch),
+							'p',
+							userSearch.title
+						);
+						eachComic();
+					})
+				: renderCharacters(resultsFound, resultsSection);
+		});
+	// updatePagination(totalAmount, collection, order, currentPage)
+	// updateResultsQuantity(collection);
 	// goBack(typeOption);
 };
 
