@@ -327,6 +327,7 @@ const displayContent = (info) => {
 
 const search = () => {
 	resultsSection.innerHTML = '';
+	aside.innerHTML = '';
 	const typeOption = typeSelect.value;
 	if (searchInput.value !== '') {
 		fetch(params(`&${typeOption == 'comics' ? 'title' : 'name'}StartsWith=${searchInput.value}`))
