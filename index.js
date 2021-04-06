@@ -286,18 +286,6 @@ form.onsubmit = (e) => {
 	search();
 };
 
-typeSelect.onchange = () => {
-	search();
-};
-
-orderSelect.onchange = () => {
-	search();
-};
-
-searchInput.oninput = () => {
-	search();
-};
-
 const search = () => {
 	resultsSection.innerHTML = '';
 	const word = searchInput.value;
