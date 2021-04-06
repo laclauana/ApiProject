@@ -282,6 +282,7 @@ const updateResultsQuantity = (cards) => {
 
 form.onsubmit = (e) => {
 	e.preventDefault();
+	createBackButton();
 	search();
 };
 
@@ -302,9 +303,7 @@ searchInput.oninput = () => {
 	resultsSection.innerHTML = '';
 	fetch(`${baseURL}comics?apikey=${apiKey}&titleStartsWith=${word}`).then((res) => res.json()).then((data) => {
 		const resultsFound = data.data.results;
-		// console.log(resultsFound);
 		resultsFound.map((userSearch) => {
-			console.log(userSearch.title);
 			displayCard(
 				resultsSection,
 				'comic',
