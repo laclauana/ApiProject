@@ -283,6 +283,7 @@ const updateResultsQuantity = (cards) => {
 form.onsubmit = (e) => {
 	e.preventDefault();
 	createBackButton();
+	loader.classList.remove('hidden');
 	search();
 };
 
@@ -309,20 +310,9 @@ const params = (userInput) => {
 
 const displayContent = (info) => {
 	const typeOption = typeSelect.value;
-	typeOption == 'comics'
-		? info.map((userSearch) => {
-				displayCard(
-					resultsSection,
-					'comic',
-					'img-container',
-					userSearch.id,
-					noAvailableImg(userSearch),
-					'p',
-					userSearch.title
-				);
-				eachComic();
-			})
-		: renderCharacters(info, resultsSection);
+	typeOption == 'comics' ? renderComics(info, resultsSection) : renderCharacters(info, resultsSection);
+	eachComic();
+	loader.classList.add('hidden');
 };
 
 const search = () => {
