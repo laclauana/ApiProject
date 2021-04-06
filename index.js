@@ -68,7 +68,6 @@ const renderComics = (comics, section) => {
 	comics.map((comic) => {
 		displayCard(section, 'comic', 'img-container', comic.id, noAvailableImg(comic), 'p', comic.title);
 	});
-
 	loader.classList.add('hidden');
 };
 
@@ -137,7 +136,7 @@ const fetchComics = (order = 'title') => {
 			// ----------------------- Accessing each comic and unpdating pagination ----------
 
 			eachComic('comics');
-			updatePagination(data.data.total, 'comics', order);
+			updatePagination(data.data.total, 'comics');
 		});
 };
 
@@ -197,7 +196,7 @@ const fetchCharacterID = (characterID) => {
 			'h2',
 			character.name
 		);
-		updatePagination(character.comics.available, 'comics', 'title');
+		updatePagination(character.comics.available, 'characters');
 	});
 };
 
@@ -244,10 +243,19 @@ const buttonsAvailable = (totalAmount) => {
 	nextPage.disabled = isLastPage;
 };
 
-const updatePagination = (totalAmount, collection, order) => {
+const updatePagination = (totalAmount, collection) => {
 	const runFetch = () => {
 		aside.innerHTML = '';
-		collection !== 'comics' ? accessCharacter() : fetchComics(order);
+		collection !== 'comics'
+			? fetch(`${baseURL}characters?apikey=${apiKey}&offset=${currentPage * cardsPerPage}`)
+					.then((res) => res.json())
+					.then((json) => {
+						const results = json.data.results;
+						resultsSection.innerHTML = '';
+						renderCharacters(results, resultsSection);
+					})
+			: fetchComics();
+		buttonsAvailable(totalAmount);
 	};
 
 	firstPage.onclick = () => {
@@ -266,7 +274,6 @@ const updatePagination = (totalAmount, collection, order) => {
 		currentPage = Math.floor(totalAmount / cardsPerPage);
 		runFetch();
 	};
-	buttonsAvailable(totalAmount);
 };
 
 // --------------------------------- Updating results quantity ---------------------------
@@ -309,14 +316,10 @@ const params = (userInput) => {
 };
 
 const displayContent = (info) => {
-	const orderOption = orderSelect.value;
 	const typeOption = typeSelect.value;
 	typeOption == 'comics' ? renderComics(info, resultsSection) : renderCharacters(info, resultsSection);
 	eachComic();
-	// updatePagination(info, typeOption, orderOption);
-	// updateResultsQuantity(info);
 	loader.classList.add('hidden');
-	// goBack(typeOption);
 };
 
 const search = () => {
@@ -329,11 +332,13 @@ const search = () => {
 			.then((data) => {
 				displayContent(data.data.results);
 				updateResultsQuantity(data.data.total);
+				updatePagination(data.data.total, typeOption);
 			});
 	} else {
 		fetch(params('')).then((res) => res.json()).then((data) => {
 			displayContent(data.data.results);
 			updateResultsQuantity(data.data.total);
+			updatePagination(data.data.total, typeOption);
 		});
 	}
 };
