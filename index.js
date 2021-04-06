@@ -309,10 +309,14 @@ const params = (userInput) => {
 };
 
 const displayContent = (info) => {
+	const orderOption = orderSelect.value;
 	const typeOption = typeSelect.value;
 	typeOption == 'comics' ? renderComics(info, resultsSection) : renderCharacters(info, resultsSection);
 	eachComic();
+	// updatePagination(info, typeOption, orderOption);
+	// updateResultsQuantity(info);
 	loader.classList.add('hidden');
+	// goBack(typeOption);
 };
 
 const search = () => {
@@ -324,15 +328,14 @@ const search = () => {
 			.then((res) => res.json())
 			.then((data) => {
 				displayContent(data.data.results);
+				updateResultsQuantity(data.data.total);
 			});
 	} else {
 		fetch(params('')).then((res) => res.json()).then((data) => {
 			displayContent(data.data.results);
+			updateResultsQuantity(data.data.total);
 		});
 	}
-	// updatePagination(totalAmount, collection, order, currentPage)
-	// updateResultsQuantity(collection);
-	// goBack(typeOption);
 };
 
 // --------------------- "back" button function ------------------------
