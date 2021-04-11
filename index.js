@@ -164,7 +164,8 @@ const accessComic = (id) => {
 				: fetchCharacters(comic.id);
 
 			// ---------------------- Enable to retrieve this function ------------------
-			!executed ? goBack(fetchComics, 'title') : goBack(accessComic, comic.id);
+
+			goBack(accessComic, comic.id);
 			loader.classList.add('hidden');
 
 			// -------------------- Show comic details ------------------
@@ -222,6 +223,7 @@ const fetchComicsFromCharacters = (characterId) => {
 	fetch(`${baseURL}characters/${characterId}/comics?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundComics = json.data.results;
 		renderComics(foundComics, aside);
+		goBack(fetchComicsFromCharacters, characterId);
 
 		// -------------------- Accessing each comic according to character's ID ---------------------
 
@@ -322,11 +324,27 @@ const displayContent = (info) => {
 	loader.classList.add('hidden');
 };
 
+// const ignore = (userInput, outcome) => {
+// 	let str1 = userInput.toUpperCase();
+// 	let str2 = outcome.toUpperCase();
+// 	let find = -1;
+// 	for (let i = 0; i < str1.length; i++) {
+// 		find = str2.indexOf(str1.charAt(i));
+// 		if (find > -1) {
+// 			str2 = str2.substr(0, find) + str2.substr(find + 1);
+// 		}
+// 	}
+// 	console.log('userInput:', str1, 'outcome:', str2);
+// };
+
+// ignore('Spiderman', 'Spider-man: #100.');
+
 const search = () => {
 	resultsSection.innerHTML = '';
 	aside.innerHTML = '';
 	const typeOption = typeSelect.value;
 	if (searchInput.value !== '') {
+		// console.log(searchInput.value.replace(/[^a-zA-Z ]/g, ''));
 		fetch(params(`&${typeOption == 'comics' ? 'title' : 'name'}StartsWith=${searchInput.value}`))
 			.then((res) => res.json())
 			.then((data) => {
@@ -347,10 +365,11 @@ const search = () => {
 
 const goBack = (history, param1, param2) => {
 	backButton.onclick = () => {
-		aside.innerHTML = '';
 		// console.log(history, param1, param2);
-		history(param1, param2);
+		aside.innerHTML = '';
 
-		// lastVisited.push(`${history}(${param1}, ${param2})`);
+		if (!history.toString().includes('pickedComic') || !history.toString().includes('foundComics')) {
+			fetchComics('title');
+		} else history(param1, param2);
 	};
 };
