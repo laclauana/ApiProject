@@ -350,13 +350,13 @@ const search = () => {
 			.then((data) => {
 				displayContent(data.data.results);
 				updateResultsQuantity(data.data.total);
-				updatePagination(data.data.total, typeOption);
+				updatePagination(data.data.total, data.data.results);
 			});
 	} else {
 		fetch(params('')).then((res) => res.json()).then((data) => {
 			displayContent(data.data.results);
 			updateResultsQuantity(data.data.total);
-			updatePagination(data.data.total, typeOption);
+			updatePagination(data.data.total, data.data.results);
 		});
 	}
 };
@@ -368,7 +368,7 @@ const goBack = (history, param1, param2) => {
 		// console.log(history, param1, param2);
 		aside.innerHTML = '';
 
-		if (!history.toString().includes('pickedComic') || !history.toString().includes('foundComics')) {
+		if (!history.toString().includes('pickedComic') || !history.toString().includes('foundC')) {
 			fetchComics('title');
 		} else history(param1, param2);
 	};
