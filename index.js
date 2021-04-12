@@ -257,7 +257,6 @@ const updatePagination = (totalAmount, collection) => {
 						renderCharacters(results, resultsSection);
 					})
 			: fetchComics();
-		buttonsAvailable(totalAmount);
 	};
 
 	firstPage.onclick = () => {
@@ -281,6 +280,7 @@ const updatePagination = (totalAmount, collection) => {
 		aside.innerHTML = '';
 		fetchComics();
 	};
+	buttonsAvailable(totalAmount);
 };
 
 // --------------------------------- Updating results quantity ---------------------------
