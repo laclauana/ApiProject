@@ -165,7 +165,7 @@ const accessComic = (id) => {
 
 			// ---------------------- Enable to retrieve this function ------------------
 
-			goBack(accessComic, comic.id);
+			// goBack(accessComic, comic.id);
 			loader.classList.add('hidden');
 
 			// -------------------- Show comic details ------------------
@@ -223,7 +223,7 @@ const fetchComicsFromCharacters = (characterId) => {
 	fetch(`${baseURL}characters/${characterId}/comics?apikey=${apiKey}`).then((res) => res.json()).then((json) => {
 		const foundComics = json.data.results;
 		renderComics(foundComics, aside);
-		goBack(fetchComicsFromCharacters, characterId);
+		// goBack(fetchComicsFromCharacters, characterId);
 
 		// -------------------- Accessing each comic according to character's ID ---------------------
 
@@ -275,6 +275,11 @@ const updatePagination = (totalAmount, collection) => {
 	lastPage.onclick = () => {
 		currentPage = Math.floor(totalAmount / cardsPerPage);
 		runFetch();
+	};
+
+	backButton.onclick = () => {
+		aside.innerHTML = '';
+		fetchComics();
 	};
 };
 
@@ -363,13 +368,13 @@ const search = () => {
 
 // --------------------- "back" button function ------------------------
 
-const goBack = (history, param1, param2) => {
-	backButton.onclick = () => {
-		// console.log(history, param1, param2);
-		aside.innerHTML = '';
+// const goBack = (history, param1, param2) => {
+// 	backButton.onclick = () => {
+// 		// console.log(history, param1, param2);
+// 		aside.innerHTML = '';
 
-		if (!history.toString().includes('pickedComic') || !history.toString().includes('foundC')) {
-			fetchComics('title');
-		} else history(param1, param2);
-	};
-};
+// 		if (!history.toString().includes('pickedComic') || !history.toString().includes('foundC')) {
+// 			fetchComics('title');
+// 		} else history(param1, param2);
+// 	};
+// };
