@@ -4,15 +4,18 @@ const baseURL = 'https://gateway.marvel.com/v1/public/';
 const apiKey = '5815682df904a6080be6caaebd915b02';
 const form = document.forms[0];
 const searchInput = document.querySelector('#search-input');
+// El value del input en la carga de la pagina ya es un string vacio: no deberia ser necesario esto
 searchInput.value = '';
 const typeSelect = document.querySelector('#type');
 const orderSelect = document.querySelector('#order');
 const resultsSection = document.querySelector('.results');
 const aside = document.querySelector('aside');
 const shownComics = document.querySelector('.title > p');
+// Este textContent en la carga de la pagina ya es un string vacio: no deberia ser necesario esto
 shownComics.textContent = '';
 const loader = document.querySelector('.overlay');
 const body = document.body;
+// Por que creamos aqui esto en lugar de tenerlo en el HTML y seleccionarlo desde JS?
 const paginationButtons = document.createElement('div');
 paginationButtons.setAttribute('class', 'center-button');
 body.appendChild(paginationButtons);
@@ -26,6 +29,8 @@ let executed = false;
 
 // ------------------------------ Creating pagination buttons ------------------------
 
+// Es mejor usar iconos con un alt para los botones que un texto: un lector de pantalla
+// va a tratar de leer "<", dejando al usuario no-vidente muy confundido
 paginationButtons.innerHTML = `
 		<button id="first-page">
 			<< </button>
@@ -53,6 +58,7 @@ const createBackButton = () => {
 
 // -------------------------- Cards display -----------------------------
 
+// imgClass siempre es "img-container", por que agregarlo como param?
 const displayCard = (section, articleClass, imgClass, id, img, tag, title) => {
 	section.innerHTML += `
 	<article class=${articleClass} data-id=${id}>
@@ -73,6 +79,7 @@ const renderComics = (comics, section) => {
 
 const renderInfoComic = (comic) => {
 	const date = new Date(comic.modified);
+			// Aqui podriamos decir: !comic.creators.available  ?
 	return (resultsSection.innerHTML += `
 					<article class="picked-comic" data-id=${comic.id}>
 							<div class="img-container">
@@ -159,6 +166,7 @@ const accessComic = (id) => {
 		pickedComic.map((comic) => {
 			resultsSection.innerHTML = '';
 			updateResultsQuantity(comic.characters.available);
+			// !comic.characters.available en lugar de igual a 0
 			comic.characters.available === 0
 				? (aside.innerHTML += `<p>No characters found 😕</p>`)
 				: fetchCharacters(comic.id);
@@ -213,6 +221,7 @@ const eachCharacter = (characters) => {
 };
 
 const accessCharacter = () => {
+	// estos son muchos personajes, una lista. El nombre es confuso. Mejor pickedCharacters
 	const pickedCharacter = document.querySelectorAll('.character');
 	eachCharacter(pickedCharacter);
 };
@@ -277,6 +286,7 @@ const updatePagination = (totalAmount, collection) => {
 	};
 
 	backButton.onclick = () => {
+		// Como aqui no estamos definiendo que currentPage es 0, la paginacion se rompe al usar este boton
 		aside.innerHTML = '';
 		fetchComics();
 	};
@@ -304,6 +314,8 @@ form.onsubmit = (e) => {
 const params = (userInput) => {
 	const orderOption = orderSelect.value;
 	const typeOption = typeSelect.value;
+	// Evitamos los ternarios anidados porque son muy dificiles de leer. Aqui es prefefrible un if:
+	// menos abstracto, pero mas explicito. 
 	return `${baseURL}${typeOption}?apikey=${apiKey}${userInput}&orderBy=${orderOption == 'A-Z' &&
 	typeOption == 'comics'
 		? 'title'
@@ -329,6 +341,8 @@ const displayContent = (info) => {
 	loader.classList.add('hidden');
 };
 
+// No dejemos codigo comentado en una entrega
+
 // const ignore = (userInput, outcome) => {
 // 	let str1 = userInput.toUpperCase();
 // 	let str2 = outcome.toUpperCase();
@@ -348,6 +362,7 @@ const search = () => {
 	resultsSection.innerHTML = '';
 	aside.innerHTML = '';
 	const typeOption = typeSelect.value;
+	// mejor asi: if (searchInput.value) {
 	if (searchInput.value !== '') {
 		// console.log(searchInput.value.replace(/[^a-zA-Z ]/g, ''));
 		fetch(params(`&${typeOption == 'comics' ? 'title' : 'name'}StartsWith=${searchInput.value}`))
