@@ -1,89 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Marvel Comics</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
-    <link rel="manifest" href="./assets/site.webmanifest">
-</head>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./assets/favicon-16x16.png"
+    />
+    <link rel="manifest" href="./assets/site.webmanifest" />
+  </head>
 
-<body>
+  <body>
     <!-- --------------- Header ---------------------- -->
     <header>
-        <div>
-            <h1>
-                MARVEL COMICS
-            </h1>
-        </div>
-        <div class="header">
-            <div class="header-image">
-            </div>
-        </div>
+      <div>
+        <h1>MARVEL COMICS</h1>
+      </div>
+      <div class="header">
+        <div class="header-image"></div>
+      </div>
     </header>
 
     <main>
-        <!-- -------------------- First section --------------------- -->
+      <!-- -------------------- First section --------------------- -->
 
-        <section>
-
-            <div class="title">
-                <h2>Search tool</h2>
-            </div>
-
-            <!-- -------------------- Searching filters ------------------------- -->
-
-            <form>
-                <div>
-                    <label for="search" class="loupe-container">
-                        <input id="search-input" type="text" placeholder="Enter your search"><img
-                            src="./assets/loupe.svg" alt="lupa">
-                    </label>
-                </div>
-                <div>
-                    <label for="select">TYPE
-                        <select name="type" id="type">
-                            <option value="comics">COMICS</option>
-                            <option value="characters">CHARACTERS</option>
-                        </select>
-                    </label>
-                    <label for="select">ORDER
-                        <select name="order" id="order">
-                            <option value="A-Z">A-Z</option>
-                            <option value="Z-A">Z-A</option>
-                            <option value="most-updated-ones">Most updated</option>
-                            <option value="most-old-ones">Oldest ones</option>
-                        </select>
-                    </label>
-                    <button class="search">Search</button>
-                </div>
-            </form>
-        </section>
-
-        <!-- -------------------------- Main section introduction --------------------------------- -->
-
+      <section>
         <div class="title">
-            <h2>Results</h2>
-            <p></p>
+          <h2>Search tool</h2>
         </div>
 
-        <!-- ---------------------- Loader ----------------------- -->
-        <div class="overlay hidden">
-            <div class="loader">
-                <div></div>
-                <div></div>
-            </div>
+        <!-- -------------------- Searching filters ------------------------- -->
+
+        <form>
+          <div>
+            <label for="search" class="loupe-container">
+              <input
+                id="search-input"
+                type="text"
+                placeholder="Enter your search"
+              /><img src="./assets/loupe.svg" alt="lupa" />
+            </label>
+          </div>
+          <div>
+            <label for="select"
+              >TYPE
+              <select name="type" id="type">
+                <option value="comics">COMICS</option>
+                <option value="characters">CHARACTERS</option>
+              </select>
+            </label>
+            <label for="select"
+              >ORDER
+              <select name="order" id="order">
+                <option value="A-Z">A-Z</option>
+                <option value="Z-A">Z-A</option>
+                <option value="most-updated-ones">Most updated</option>
+                <option value="most-old-ones">Oldest ones</option>
+              </select>
+            </label>
+            <button class="search">Search</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- -------------------------- Main section introduction --------------------------------- -->
+
+      <div class="title">
+        <h2>Results</h2>
+        <p></p>
+      </div>
+
+      <!-- ---------------------- Loader ----------------------- -->
+      <div class="overlay hidden">
+        <div class="loader">
+          <div></div>
+          <div></div>
         </div>
+      </div>
 
-        <!-- ---------------------- Main section with fetched cards ------------------- -->
+      <!-- ---------------------- Main section with fetched cards ------------------- -->
 
-        <section class="results"></section>
-        <aside></aside>
-
+      <section class="results"></section>
+      <aside></aside>
     </main>
 
     <script src="index.js"></script>
@@ -96,11 +109,7 @@
     <!-- ---------------------------- Tiny footer ------------------------------ -->
 
     <footer>
-        <div>
-            Made by <strong>anaclette</strong>
-        </div>
+      <div>Made by <strong>Ana Laclau</strong></div>
     </footer>
-
-</body>
-
+  </body>
 </html>
